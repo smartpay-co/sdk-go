@@ -102,7 +102,7 @@ This design applies to all our APIs.
 
 ## License
 
-Distributed under the Apache 2.0 License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
