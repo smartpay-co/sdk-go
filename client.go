@@ -28,6 +28,9 @@ type Client struct {
 	// Secret Key for accessing the API
 	secretKey string
 
+	// Public key
+	publicKey string
+
 	// Doer for performing requests, typically a *http.Client with any
 	// customized settings, such as certificate chains.
 	Client HttpRequestDoer
@@ -41,11 +44,12 @@ type Client struct {
 type ClientOption func(*Client) error
 
 // Creates a new Client, with reasonable defaults
-func NewClient(secretKey string, opts ...ClientOption) (*Client, error) {
+func NewClient(secretKey string, publicKey string, opts ...ClientOption) (*Client, error) {
 	// create a client with sane default values
 	client := Client{
 		Server:    ApiEndpoint,
 		secretKey: secretKey,
+		publicKey: publicKey,
 	}
 	// mutate client and add all optional params
 	for _, o := range opts {
@@ -111,8 +115,8 @@ type ClientWithResponses struct {
 
 // NewClientWithResponses creates a new ClientWithResponses, which wraps
 // Client with return type handling
-func NewClientWithResponses(secretKey string, opts ...ClientOption) (*ClientWithResponses, error) {
-	client, err := NewClient(secretKey, opts...)
+func NewClientWithResponses(secretKey string, publicKey string, opts ...ClientOption) (*ClientWithResponses, error) {
+	client, err := NewClient(secretKey, publicKey, opts...)
 	if err != nil {
 		return nil, err
 	}

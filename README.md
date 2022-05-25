@@ -55,7 +55,7 @@ import (
 
 func main() {
 	ctx := context.Background()
-	client, _ := NewClientWithResponses("<YOUR_SECRET_KEY>")
+	client, _ := NewClientWithResponses("<YOUR_SECRET_KEY>", "<YOUR_PUBLIC_KEY>")
 
 	checkoutPayload := CreateACheckoutSessionJSONRequestBody{
 		Currency: CurrencyJPY,
