@@ -101,7 +101,7 @@ type CheckoutSessionExpanded struct {
 	Object *string `json:"object,omitempty"`
 
 	// The unique identifier for the Payment object.
-	//Order *OrderId `json:"order,omitempty"`
+	Order *OrderExpanded `json:"order,omitempty"`
 
 	// The URL the customer will be redirected to if the Checkout Session completed successfully. This means the Checkout succeeded, i.e. the customer authorized the order.
 	SuccessUrl *SuccessUrl `json:"successUrl,omitempty"`
