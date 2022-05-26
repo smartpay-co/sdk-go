@@ -251,7 +251,8 @@ type Discount struct {
 }
 
 // The discount amount applied to the order through a Smartpay coupon
-type DiscountAmount int
+//type DiscountAmount int
+type DiscountAmount float32
 
 // The unique identifier for the Discount object.
 type DiscountId string
