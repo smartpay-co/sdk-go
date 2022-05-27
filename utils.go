@@ -7,14 +7,14 @@ func Ptr[T any](v T) *T {
 	return &v
 }
 
-func ConvertToStruct[T any](from interface{}) (to T) {
+func ConvertToStruct[T any](from interface{}) (to T, err error) {
 	jsonData, err := json.Marshal(from)
 	if err != nil {
-		panic(err)
+		return to, err
 	}
 	err = json.Unmarshal(jsonData, &to)
 	if err != nil {
-		panic(err)
+		return to, err
 	}
 	return
 }

@@ -74,7 +74,7 @@ func (suite *CheckOutTestSuite) TestRetrieveACheckOutSession() {
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
 
-	checkoutSession := ConvertToStruct[CheckoutSession](result.JSON200)
+	checkoutSession, _ := ConvertToStruct[CheckoutSession](result.JSON200)
 	suite.Equal(string(*checkoutSession.Id), id)
 }
 
@@ -90,7 +90,7 @@ func (suite *CheckOutTestSuite) TestRetrieveACheckOutSessionExpanded() {
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
 
-	checkoutSession := ConvertToStruct[CheckoutSessionExpanded](result.JSON200)
+	checkoutSession, _ := ConvertToStruct[CheckoutSessionExpanded](result.JSON200)
 	suite.Equal(string(*checkoutSession.Id), id)
 }
 
@@ -103,7 +103,7 @@ func (suite *CheckOutTestSuite) TestListAllCheckoutSession() {
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
 
-	checkoutSession := ConvertToStruct[CheckoutSession]((*result.JSON200.Data)[0])
+	checkoutSession, _ := ConvertToStruct[CheckoutSession]((*result.JSON200.Data)[0])
 	suite.NotNil(checkoutSession.Id)
 }
 
@@ -118,6 +118,6 @@ func (suite *CheckOutTestSuite) TestListAllCheckoutSessionExpanded() {
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
 
-	checkoutSession := ConvertToStruct[CheckoutSessionExpanded]((*result.JSON200.Data)[0])
+	checkoutSession, _ := ConvertToStruct[CheckoutSessionExpanded]((*result.JSON200.Data)[0])
 	suite.NotNil(checkoutSession.Id)
 }
