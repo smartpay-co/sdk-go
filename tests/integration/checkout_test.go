@@ -81,7 +81,7 @@ func (suite *CheckOutTestSuite) TestRetrieveACheckOutSession() {
 func (suite *CheckOutTestSuite) TestRetrieveACheckOutSessionExpanded() {
 	//suite.T().Skip()
 	params := RetrieveACheckoutSessionParams{
-		Expand: Ptr(RetrieveACheckoutSessionParamsExpand(All)),
+		Expand: Ptr(RetrieveACheckoutSessionParamsExpand(ExpandAll)),
 	}
 	id := string(*suite.CheckoutSessionId)
 	result, err := suite.client.RetrieveACheckoutSessionWithResponse(suite.ctx, id, &params)
@@ -110,7 +110,7 @@ func (suite *CheckOutTestSuite) TestListAllCheckoutSession() {
 func (suite *CheckOutTestSuite) TestListAllCheckoutSessionExpanded() {
 	//suite.T().Skip()
 	params := ListAllCheckoutSessionsParams{
-		Expand: Ptr(ListAllCheckoutSessionsParamsExpand(All)),
+		Expand: Ptr(ListAllCheckoutSessionsParamsExpand(ExpandAll)),
 	}
 	result, err := suite.client.ListAllCheckoutSessionsWithResponse(suite.ctx, &params)
 

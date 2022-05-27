@@ -148,7 +148,7 @@ const (
 
 // Defines values for Expand.
 const (
-	All Expand = "all"
+	ExpandAll Expand = "all"
 
-	No Expand = "no"
+	ExpandNo Expand = "no"
 )
