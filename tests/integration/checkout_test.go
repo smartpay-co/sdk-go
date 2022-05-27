@@ -73,7 +73,9 @@ func (suite *CheckOutTestSuite) TestRetrieveACheckOutSession() {
 	suite.Nil(err)
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
-	suite.Equal(string(*result.JSON200.(*CheckoutSession).Id), id)
+
+	checkoutSession := ConvertToStruct[CheckoutSession](result.JSON200)
+	suite.Equal(string(*checkoutSession.Id), id)
 }
 
 func (suite *CheckOutTestSuite) TestRetrieveACheckOutSessionExpanded() {
@@ -87,5 +89,35 @@ func (suite *CheckOutTestSuite) TestRetrieveACheckOutSessionExpanded() {
 	suite.Nil(err)
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
-	suite.Equal(string(*result.JSON200.(*CheckoutSessionExpanded).Id), id)
+
+	checkoutSession := ConvertToStruct[CheckoutSessionExpanded](result.JSON200)
+	suite.Equal(string(*checkoutSession.Id), id)
+}
+
+func (suite *CheckOutTestSuite) TestListAllCheckoutSession() {
+	//suite.T().Skip()
+	params := ListAllCheckoutSessionsParams{}
+	result, err := suite.client.ListAllCheckoutSessionsWithResponse(suite.ctx, &params)
+
+	suite.Nil(err)
+	suite.NotNil(result.Body)
+	suite.NotNil(result.JSON200)
+
+	checkoutSession := ConvertToStruct[CheckoutSession]((*result.JSON200.Data)[0])
+	suite.NotNil(checkoutSession.Id)
+}
+
+func (suite *CheckOutTestSuite) TestListAllCheckoutSessionExpanded() {
+	//suite.T().Skip()
+	params := ListAllCheckoutSessionsParams{
+		Expand: Ptr(ListAllCheckoutSessionsParamsExpand(All)),
+	}
+	result, err := suite.client.ListAllCheckoutSessionsWithResponse(suite.ctx, &params)
+
+	suite.Nil(err)
+	suite.NotNil(result.Body)
+	suite.NotNil(result.JSON200)
+
+	checkoutSession := ConvertToStruct[CheckoutSessionExpanded]((*result.JSON200.Data)[0])
+	suite.NotNil(checkoutSession.Id)
 }

@@ -1729,9 +1729,8 @@ func (r CreateACheckoutSessionResponse) StatusCode() int {
 type RetrieveACheckoutSessionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	//JSON200      *CheckoutSessionOptions
-	JSON200 interface{}
-	JSON401 *struct {
+	JSON200      *CheckoutSessionOptions
+	JSON401      *struct {
 		Realm      *string `json:"realm,omitempty"`
 		Scheme     *string `json:"scheme,omitempty"`
 		StatusCode *int    `json:"statusCode,omitempty"`
@@ -2565,7 +2564,7 @@ func (c *ClientWithResponses) RetrieveACheckoutSessionWithResponse(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	return ParseRetrieveACheckoutSessionResponse(rsp, params)
+	return ParseRetrieveACheckoutSessionResponse(rsp)
 }
 
 // ListAllCouponsWithResponse request returning *ListAllCouponsResponse
@@ -2930,7 +2929,7 @@ func ParseCreateACheckoutSessionResponse(rsp *http.Response) (*CreateACheckoutSe
 }
 
 // ParseRetrieveACheckoutSessionResponse parses an HTTP response from a RetrieveACheckoutSessionWithResponse call
-func ParseRetrieveACheckoutSessionResponse(rsp *http.Response, params *RetrieveACheckoutSessionParams) (*RetrieveACheckoutSessionResponse, error) {
+func ParseRetrieveACheckoutSessionResponse(rsp *http.Response) (*RetrieveACheckoutSessionResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
@@ -2944,19 +2943,11 @@ func ParseRetrieveACheckoutSessionResponse(rsp *http.Response, params *RetrieveA
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		if params.Expand != nil && string(*params.Expand) == string(All) {
-			var dest = CheckoutSessionExpanded{}
-			if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-				return nil, err
-			}
-			response.JSON200 = &dest
-		} else {
-			var dest = CheckoutSession{}
-			if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-				return nil, err
-			}
-			response.JSON200 = &dest
+		var dest CheckoutSessionOptions
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
 		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
 		var dest struct {
