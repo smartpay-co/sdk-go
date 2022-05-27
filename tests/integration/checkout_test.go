@@ -21,8 +21,8 @@ func TestCheckOutTestSuite(t *testing.T) {
 }
 
 func (suite *CheckOutTestSuite) SetupSuite() {
-	secretKey := os.Getenv("SECRET_KEY")
-	publicKey := os.Getenv("PUBLIC_KEY")
+	secretKey := os.Getenv("SMARTPAY_SECRET_KEY")
+	publicKey := os.Getenv("SMARTPAY_PUBLIC_KEY")
 	apiBase := os.Getenv("API_BASE")
 
 	suite.ctx = context.TODO()
