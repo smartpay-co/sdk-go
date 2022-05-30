@@ -118,6 +118,12 @@ const (
 	PaymentExpandedStatusRefunded PaymentExpandedStatus = "refunded"
 )
 
+// Defines values for PaymentCreateCancelRemainder
+const (
+	PaymentCreateCancelRemainderAutomatic PaymentCreateCancelRemainder = "automatic"
+	PaymentCreateCancelRemainderManual    PaymentCreateCancelRemainder = "manual"
+)
+
 // Defines values for RefundReason.
 const (
 	RefundReasonFraudulent RefundReason = "fraudulent"

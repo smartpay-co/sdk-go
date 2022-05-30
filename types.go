@@ -1066,7 +1066,7 @@ type PaymentCreate struct {
 	Amount float32 `json:"amount"`
 
 	// Whether to cancel remaining amount in case of a partial capture. Defaults to automatic, which means only a single capture is allowed and any remaining, uncaptured amount is cancelled. Set to manual if you would like to create multiple partial captures.
-	//CancelRemainder *PaymentCreateCancelRemainder `json:"cancelRemainder,omitempty"`
+	CancelRemainder *PaymentCreateCancelRemainder `json:"cancelRemainder,omitempty"`
 
 	// Three-letter ISO currency code, in uppercase. Must be a supported currency.
 	Currency Currency `json:"currency"`
@@ -1273,8 +1273,8 @@ type ListAllPaymentsParams struct {
 // ListAllPaymentsParamsExpand defines parameters for ListAllPayments.
 type ListAllPaymentsParamsExpand string
 
-// CreateAPaymentJSONBodyCancelRemainder defines parameters for CreateAPayment.
-type CreateAPaymentJSONBodyCancelRemainder string
+// PaymentCreateCancelRemainder defines parameters for CreateAPayment.
+type PaymentCreateCancelRemainder string
 
 // ListAllPromotionCodesParams defines parameters for ListAllPromotionCodes.
 type ListAllPromotionCodesParams struct {
