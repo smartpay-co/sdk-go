@@ -654,7 +654,7 @@ type PromotionCodeId string
 
 // Refund
 type Refund struct {
-	Amount *int `json:"amount,omitempty"`
+	Amount *float32 `json:"amount,omitempty"`
 
 	// Time at which the object was created. Measured in milliseconds since the Unix epoch.
 	CreatedAt *CreatedAt `json:"createdAt,omitempty"`
@@ -1162,7 +1162,7 @@ type RefundCreate struct {
 	Payment PaymentId `json:"payment"`
 
 	// The reason of the Refund
-	//Reason RefundCreateReason `json:"reason"`
+	Reason RefundReason `json:"reason"`
 
 	// A - ideally unique - string to reference the Refund which can be used to reconcile the Refund with your internal systems.
 	Reference *string `json:"reference,omitempty"`
