@@ -171,6 +171,30 @@ func (c *Client) CancelAnOrder(ctx context.Context, orderId string, reqEditors .
 	return c.Client.Do(req)
 }
 
+func (c *Client) UpdateAPaymentWithBody(ctx context.Context, paymentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAPaymentRequestWithBody(c.Server, paymentId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAPayment(ctx context.Context, paymentId string, body UpdateAPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAPaymentRequest(c.Server, paymentId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListAllPayments(ctx context.Context, params *ListAllPaymentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListAllPaymentsRequest(c.Server, params)
 	if err != nil {
@@ -955,6 +979,53 @@ func NewCancelAnOrderRequest(server string, orderId string) (*http.Request, erro
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewUpdateAPaymentRequest calls the generic UpdateAPayment builder with application/json body
+func NewUpdateAPaymentRequest(server string, paymentId string, body UpdateAPaymentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAPaymentRequestWithBody(server, paymentId, "application/json", bodyReader)
+}
+
+// NewUpdateAPaymentRequestWithBody generates requests for UpdateAPayment with any type of body
+func NewUpdateAPaymentRequestWithBody(server string, paymentId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "paymentId", runtime.ParamLocationPath, paymentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/payments/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -2084,6 +2155,39 @@ func (r CancelAnOrderResponse) StatusCode() int {
 	return 0
 }
 
+type UpdateAPaymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Payment
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{}  `json:"details"`
+		ErrorCode  N404ErrorCode  `json:"errorCode"`
+		Message    string         `json:"message"`
+		StatusCode N404StatusCode `json:"statusCode"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateAPaymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAPaymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListAllPaymentsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2744,6 +2848,23 @@ func (c *ClientWithResponses) CancelAnOrderWithResponse(ctx context.Context, ord
 		return nil, err
 	}
 	return ParseCancelAnOrderResponse(rsp)
+}
+
+// UpdateAPaymentWithBodyWithResponse request with arbitrary body returning *UpdateAPaymentResponse
+func (c *ClientWithResponses) UpdateAPaymentWithBodyWithResponse(ctx context.Context, paymentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAPaymentResponse, error) {
+	rsp, err := c.UpdateAPaymentWithBody(ctx, paymentId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAPaymentResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAPaymentWithResponse(ctx context.Context, paymentId string, body UpdateAPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAPaymentResponse, error) {
+	rsp, err := c.UpdateAPayment(ctx, paymentId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAPaymentResponse(rsp)
 }
 
 // ListAllPaymentsWithResponse request returning *ListAllPaymentsResponse
@@ -3439,6 +3560,55 @@ func ParseCancelAnOrderResponse(rsp *http.Response) (*CancelAnOrderResponse, err
 			return nil, err
 		}
 		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAPaymentResponse parses an HTTP response from a UpdateAPaymentWithResponse call
+func ParseUpdateAPaymentResponse(rsp *http.Response) (*UpdateAPaymentResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAPaymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Payment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{}  `json:"details"`
+			ErrorCode  N404ErrorCode  `json:"errorCode"`
+			Message    string         `json:"message"`
+			StatusCode N404StatusCode `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 

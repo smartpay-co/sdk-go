@@ -63,4 +63,15 @@ func (suite *IntegrationTestSuite) TestCreateAPayment() {
 		obj, _ := ConvertToStruct[PaymentExpanded]((*result.JSON200.Data)[0])
 		suite.NotNil(obj.Id)
 	})
+
+	suite.Run("TestUpdateAPayment", func() {
+		params := UpdateAPaymentJSONRequestBody{
+			Reference: Ptr("test_update_payment"),
+		}
+		result, err := suite.client.UpdateAPaymentWithResponse(suite.ctx, paymentId, params)
+		suite.Nil(err)
+		suite.NotNil(result.Body)
+		suite.NotNil(result.JSON200)
+		suite.EqualValues("test_update_payment", *result.JSON200.Reference)
+	})
 }

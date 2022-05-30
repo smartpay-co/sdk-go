@@ -1060,6 +1060,18 @@ type CouponUpdate struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// PaymentUpdate defines model for payment_update.
+type PaymentUpdate struct {
+	// An arbitrary - ideally descriptive - long form explanation of the Payment, meant to be displayed to the customer.
+	Description *string `json:"description,omitempty"`
+
+	// Set of up to 20 key-value pairs that you can attach to the object.
+	Metadata *Metadata `json:"metadata,omitempty"`
+
+	// A - ideally unique - string to reference the Payment (e.g. a customer ID, a cart ID, etc.) which can be used to reconcile the Payment with your internal systems.
+	Reference *string `json:"reference,omitempty"`
+}
+
 // PaymentCreate defines model for payment_create.
 type PaymentCreate struct {
 	// The amount to be captured.
@@ -1341,6 +1353,9 @@ type UpdateACouponJSONRequestBody CouponUpdate
 
 // CreateAPaymentJSONRequestBody defines body for CreateAPayment for application/json ContentType.
 type CreateAPaymentJSONRequestBody PaymentCreate
+
+// UpdateAPaymentJSONRequestBody defines body for UpdateAPayment for application/json ContentType.
+type UpdateAPaymentJSONRequestBody PaymentUpdate
 
 // CreateAPromotionCodeJSONRequestBody defines body for CreateAPromotionCode for application/json ContentType.
 type CreateAPromotionCodeJSONRequestBody PromotionCodeCreate
