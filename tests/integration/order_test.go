@@ -59,3 +59,13 @@ func (suite *IntegrationTestSuite) TestRetrieveAnOrderExpanded() {
 	order, _ := ConvertToStruct[OrderExpanded](result.JSON200)
 	suite.NotNil(order.Id)
 }
+
+func (suite *IntegrationTestSuite) TestCancelAnOrder() {
+	//suite.T().Skip()
+	result, err := suite.client.CancelAnOrderWithResponse(suite.ctx, suite.testCancelOrderId)
+
+	suite.Nil(err)
+	suite.NotNil(result.Body)
+	suite.NotNil(result.JSON200)
+	suite.EqualValues(string(*result.JSON200.Status), OrderStatusCanceled)
+}
