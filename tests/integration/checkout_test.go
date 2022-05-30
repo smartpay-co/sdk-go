@@ -54,6 +54,28 @@ func (suite *IntegrationTestSuite) TestListAllCheckoutSession() {
 	suite.NotNil(checkoutSession.Id)
 }
 
+func (suite *IntegrationTestSuite) TestListAllCheckoutSessionPagination() {
+	//suite.T().Skip()
+	// Get the first page
+	firstPageParams := ListAllCheckoutSessionsParams{
+		MaxResults: Ptr(MaxResults(1)),
+	}
+	FirstPageResult, err := suite.client.ListAllCheckoutSessionsWithResponse(suite.ctx, &firstPageParams)
+	suite.Nil(err)
+	suite.Len(*FirstPageResult.JSON200.Data, 1)
+
+	// Get the next page
+	nextPageToken := FirstPageResult.JSON200.NextPageToken
+	nextPageParams := ListAllCheckoutSessionsParams{
+		MaxResults: Ptr(MaxResults(1)),
+		PageToken:  Ptr(PageToken(*nextPageToken)),
+	}
+	nextPageResult, err := suite.client.ListAllCheckoutSessionsWithResponse(suite.ctx, &nextPageParams)
+	suite.Nil(err)
+	suite.Len(*nextPageResult.JSON200.Data, 1)
+	suite.EqualValues(string(*nextPageResult.JSON200.PageToken), string(*nextPageToken))
+}
+
 func (suite *IntegrationTestSuite) TestListAllCheckoutSessionExpanded() {
 	//suite.T().Skip()
 	params := ListAllCheckoutSessionsParams{
