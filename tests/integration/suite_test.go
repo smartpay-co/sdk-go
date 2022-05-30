@@ -2,7 +2,6 @@ package integration
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/imroc/req/v3"
 	. "github.com/smartpay-co/sdk-go"
@@ -95,7 +94,7 @@ func authorizeOrder(orderId string) (err error) {
 		return
 	}
 	//req.DevMode()
-	httpClient := req.C().SetJsonUnmarshal(json.Unmarshal) //.EnableDumpAllWithoutResponse()
+	httpClient := req.C().SetLogger(nil) //.EnableDumpAllWithoutResponse()
 	_, err = httpClient.R().SetBearerAuthToken(accessToken).SetBody(`{"paymentMethod":"pm_test_visaApproved","paymentPlan":"pay_in_three"}`).Post(apiPath.String())
 
 	return
@@ -107,7 +106,7 @@ func retrieveAccessToken() (accessToken string, err error) {
 	username := os.Getenv("TEST_USERNAME")
 	password := os.Getenv("TEST_PASSWORD")
 	//req.DevMode()
-	httpClient := req.C().SetJsonUnmarshal(json.Unmarshal) //.EnableDumpAllWithoutResponse()
+	httpClient := req.C().SetLogger(nil) //.EnableDumpAllWithoutResponse()
 	var dest struct {
 		AccessToken *string `json:"accessToken,omitempty"`
 	}

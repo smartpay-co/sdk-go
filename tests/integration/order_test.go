@@ -32,6 +32,28 @@ func (suite *IntegrationTestSuite) TestListAllOrdersExpanded() {
 	suite.NotNil(order.Id)
 }
 
+func (suite *IntegrationTestSuite) TestListAllOrdersPagination() {
+	//suite.T().Skip()
+	// Get the first page
+	firstPageParams := ListAllOrdersParams{
+		MaxResults: Ptr(MaxResults(1)),
+	}
+	FirstPageResult, err := suite.client.ListAllOrdersWithResponse(suite.ctx, &firstPageParams)
+	suite.Nil(err)
+	suite.Len(*FirstPageResult.JSON200.Data, 1)
+
+	// Get the next page
+	nextPageToken := FirstPageResult.JSON200.NextPageToken
+	nextPageParams := ListAllOrdersParams{
+		MaxResults: Ptr(MaxResults(1)),
+		PageToken:  Ptr(PageToken(*nextPageToken)),
+	}
+	nextPageResult, err := suite.client.ListAllOrdersWithResponse(suite.ctx, &nextPageParams)
+	suite.Nil(err)
+	suite.Len(*nextPageResult.JSON200.Data, 1)
+	suite.EqualValues(string(*nextPageResult.JSON200.PageToken), string(*nextPageToken))
+}
+
 func (suite *IntegrationTestSuite) TestRetrieveAnOrder() {
 	//suite.T().Skip()
 	params := RetrieveAnOrderParams{}
