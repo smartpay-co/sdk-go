@@ -18,5 +18,27 @@ func (suite *IntegrationTestSuite) TestCreateAPayment() {
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
 	suite.NotNil(result.JSON200.Id)
+	paymentId := string(*result.JSON200.Id)
 
+	suite.Run("TestRetrieveAPayment", func() {
+		params := RetrieveAPaymentParams{}
+		retrieveAPaymentResult, err := suite.client.RetrieveAPaymentWithResponse(suite.ctx, paymentId, &params)
+		suite.Nil(err)
+		suite.NotNil(retrieveAPaymentResult.Body)
+		suite.NotNil(retrieveAPaymentResult.JSON200)
+		payment, _ := ConvertToStruct[Payment](retrieveAPaymentResult.JSON200)
+		suite.EqualValues(string(*payment.Id), paymentId)
+	})
+
+	suite.Run("TestRetrieveAPaymentExpanded", func() {
+		params := RetrieveAPaymentParams{
+			Expand: Ptr(RetrieveAPaymentParamsExpand(ExpandAll)),
+		}
+		retrieveAPaymentResult, err := suite.client.RetrieveAPaymentWithResponse(suite.ctx, paymentId, &params)
+		suite.Nil(err)
+		suite.NotNil(retrieveAPaymentResult.Body)
+		suite.NotNil(retrieveAPaymentResult.JSON200)
+		payment, _ := ConvertToStruct[PaymentExpanded](retrieveAPaymentResult.JSON200)
+		suite.EqualValues(string(*payment.Id), paymentId)
+	})
 }

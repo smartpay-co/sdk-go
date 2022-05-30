@@ -183,6 +183,18 @@ func (c *Client) ListAllPayments(ctx context.Context, params *ListAllPaymentsPar
 	return c.Client.Do(req)
 }
 
+func (c *Client) RetrieveAPayment(ctx context.Context, paymentId string, params *RetrieveAPaymentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveAPaymentRequest(c.Server, paymentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CreateAPaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateAPaymentRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -999,6 +1011,60 @@ func NewListAllPaymentsRequest(server string, params *ListAllPaymentsParams) (*h
 		}
 
 	}
+
+	if params.Expand != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "expand", runtime.ParamLocationQuery, *params.Expand); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRetrieveAPaymentRequest generates requests for RetrieveAnOrder
+func NewRetrieveAPaymentRequest(server string, paymentId string, params *RetrieveAPaymentParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "paymentId", runtime.ParamLocationPath, paymentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/payments/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
 
 	if params.Expand != nil {
 
@@ -2062,6 +2128,39 @@ func (r ListAllPaymentsResponse) StatusCode() int {
 	return 0
 }
 
+type RetrieveAPaymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *PaymentOptions
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{}  `json:"details"`
+		ErrorCode  N404ErrorCode  `json:"errorCode"`
+		Message    string         `json:"message"`
+		StatusCode N404StatusCode `json:"statusCode"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveAPaymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveAPaymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type CreateAPaymentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2654,6 +2753,15 @@ func (c *ClientWithResponses) ListAllPaymentsWithResponse(ctx context.Context, p
 		return nil, err
 	}
 	return ParseListAllPaymentsResponse(rsp)
+}
+
+// RetrieveAPaymentWithResponse request returning *RetrieveAPaymentResponse
+func (c *ClientWithResponses) RetrieveAPaymentWithResponse(ctx context.Context, paymentId string, params *RetrieveAPaymentParams, reqEditors ...RequestEditorFn) (*RetrieveAPaymentResponse, error) {
+	rsp, err := c.RetrieveAPayment(ctx, paymentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveAPaymentResponse(rsp)
 }
 
 // CreateAPaymentWithBodyWithResponse request with arbitrary body returning *CreateAPaymentResponse
@@ -3385,6 +3493,55 @@ func ParseListAllPaymentsResponse(rsp *http.Response) (*ListAllPaymentsResponse,
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveAPaymentResponse parses an HTTP response from a RetrieveAPaymentWithResponse call
+func ParseRetrieveAPaymentResponse(rsp *http.Response) (*RetrieveAPaymentResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveAPaymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PaymentOptions
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{}  `json:"details"`
+			ErrorCode  N404ErrorCode  `json:"errorCode"`
+			Message    string         `json:"message"`
+			StatusCode N404StatusCode `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 

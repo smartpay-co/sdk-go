@@ -1273,6 +1273,15 @@ type ListAllPaymentsParams struct {
 // ListAllPaymentsParamsExpand defines parameters for ListAllPayments.
 type ListAllPaymentsParamsExpand string
 
+// RetrieveAPaymentParams defines parameters for RetrieveAPayment.
+type RetrieveAPaymentParams struct {
+	// Set to `all` if the references within the response need to be expanded to the full objects
+	Expand *RetrieveAPaymentParamsExpand `json:"expand,omitempty"`
+}
+
+// RetrieveAPaymentParamsExpand defines parameters for RetrieveAnOrder.
+type RetrieveAPaymentParamsExpand string
+
 // PaymentCreateCancelRemainder defines parameters for CreateAPayment.
 type PaymentCreateCancelRemainder string
 
