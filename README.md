@@ -1,17 +1,21 @@
 <div id="top"></div>
 
 <!-- PROJECT SHIELDS -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![Apache 2.0 License][license-shield]][license-url]
 
-
 <br />
 <div align="center">
   <a href="https://github.com/smartpay-cp/sdk-go">
-    <img src="images/logo.png" alt="Logo" width="80%">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://assets.smartpay.co/logo/banner/smartpay-logo-dark.png" />
+			<source media="(prefers-color-scheme: light)" srcset="https://assets.smartpay.co/logo/banner/smartpay-logo.png" />
+			<img alt="Smartpay" src="https://assets.smartpay.co/logo/banner/smartpay-logo.png" style="width: 797px;" />
+		</picture>
   </a>
 
   <p align="center">
@@ -20,9 +24,9 @@
     <br />
     <a href="https://github.com/smartpay-co/integration-examples">View Example</a>
     ·
-    <a href="https://github.com/smartpay-cp/sdk-go/issues">Report Bug</a>
+    <a href="https://github.com/smartpay-co/sdk-go/issues">Report Bug</a>
     ·
-    <a href="https://github.com/smartpay-cp/sdk-go/issues">Request Feature</a>
+    <a href="https://github.com/smartpay-co/sdk-go/issues">Request Feature</a>
   </p>
 </div>
 
@@ -106,6 +110,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/smartpay-co/sdk-node.svg?style=for-the-badge
 [contributors-url]: https://github.com/smartpay-co/sdk-node/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/smartpay-co/sdk-node.svg?style=for-the-badge
