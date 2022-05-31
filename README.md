@@ -110,14 +110,13 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/smartpay-co/sdk-node.svg?style=for-the-badge
-[contributors-url]: https://github.com/smartpay-co/sdk-node/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/smartpay-co/sdk-node.svg?style=for-the-badge
-[forks-url]: https://github.com/smartpay-co/sdk-node/network/members
-[stars-shield]: https://img.shields.io/github/stars/smartpay-co/sdk-node.svg?style=for-the-badge
-[stars-url]: https://github.com/smartpay-co/sdk-node/stargazers
-[issues-shield]: https://img.shields.io/github/issues/smartpay-co/sdk-node.svg?style=for-the-badge
-[issues-url]: https://github.com/smartpay-co/sdk-node/issues
-[license-shield]: https://img.shields.io/github/license/smartpay-co/sdk-node.svg?style=for-the-badge
-[license-url]: https://github.com/smartpay-co/sdk-node/blob/main/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/smartpay-co/sdk-go.svg?style=for-the-badge
+[contributors-url]: https://github.com/smartpay-co/sdk-go/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/smartpay-co/sdk-go.svg?style=for-the-badge
+[forks-url]: https://github.com/smartpay-co/sdk-go/network/members
+[stars-shield]: https://img.shields.io/github/stars/smartpay-co/sdk-go.svg?style=for-the-badge
+[stars-url]: https://github.com/smartpay-co/sdk-go/stargazers
+[issues-shield]: https://img.shields.io/github/issues/smartpay-co/sdk-go.svg?style=for-the-badge
+[issues-url]: https://github.com/smartpay-co/sdk-go/issues
+[license-shield]: https://img.shields.io/github/license/smartpay-co/sdk-go.svg?style=for-the-badge
+[license-url]: https://github.com/smartpay-co/sdk-go/blob/main/LICENSE.txt
