@@ -6,6 +6,8 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
+[![Go Reference][reference-shield]][reference-url]
+[![Go Report Card][go-report-card-shield]][go-report-card-url]
 [![Apache 2.0 License][license-shield]][license-url]
 
 <br />
@@ -110,13 +112,17 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/smartpay-co/sdk-go.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/smartpay-co/sdk-go.svg
 [contributors-url]: https://github.com/smartpay-co/sdk-go/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/smartpay-co/sdk-go.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/smartpay-co/sdk-go.svg
 [forks-url]: https://github.com/smartpay-co/sdk-go/network/members
-[stars-shield]: https://img.shields.io/github/stars/smartpay-co/sdk-go.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/smartpay-co/sdk-go.svg
 [stars-url]: https://github.com/smartpay-co/sdk-go/stargazers
-[issues-shield]: https://img.shields.io/github/issues/smartpay-co/sdk-go.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/smartpay-co/sdk-go.svg
 [issues-url]: https://github.com/smartpay-co/sdk-go/issues
-[license-shield]: https://img.shields.io/github/license/smartpay-co/sdk-go.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/smartpay-co/sdk-go.svg
 [license-url]: https://github.com/smartpay-co/sdk-go/blob/main/LICENSE.txt
+[reference-shield]: https://pkg.go.dev/badge/github.com/smartpay-co/sdk-go.svg
+[reference-url]: https://pkg.go.dev/github.com/smartpay-co/sdk-go
+[go-report-card-shield]: https://goreportcard.com/badge/github.com/smartpay-co/sdk-go
+[go-report-card-url]: https://goreportcard.com/report/github.com/smartpay-co/sdk-go
