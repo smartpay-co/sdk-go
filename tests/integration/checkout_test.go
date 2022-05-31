@@ -11,6 +11,11 @@ func (suite *IntegrationTestSuite) TestCreateACheckOutSession() {
 	suite.Nil(err)
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
+	suite.Run("TestCheckoutSessionUrlWithPromotionCode", func() {
+		result, err := result.JSON200.Url.WithPromotionCode("promo123")
+		suite.Nil(err)
+		suite.Contains(result, "promo123")
+	})
 }
 
 func (suite *IntegrationTestSuite) TestRetrieveACheckOutSession() {
