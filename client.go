@@ -73,6 +73,15 @@ func NewClient(secretKey string, publicKey string, opts ...ClientOption) (*Clien
 		client.Client = &http.Client{}
 	}
 
+	// Inject dev-lang & sdk-version
+	WithRequestEditorFn(func(ctx context.Context, req *http.Request) (err error) {
+		values := req.URL.Query()
+		values.Add("dev-lang", "go")
+		values.Add("sdk-version", Version)
+		req.URL.RawQuery = values.Encode()
+		return
+	})(&client)
+
 	// Inject API key header
 	apiKeyProvider, apiKeyProviderErr := securityprovider.NewSecurityProviderApiKey("header", "Authorization", fmt.Sprintf("Basic %s", client.secretKey))
 	if apiKeyProviderErr != nil {
