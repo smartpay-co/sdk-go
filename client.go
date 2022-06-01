@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 )
 
@@ -51,6 +52,12 @@ func NewClient(secretKey string, publicKey string, opts ...ClientOption) (*Clien
 		secretKey: secretKey,
 		publicKey: publicKey,
 	}
+	// read envvar for ApiEndpoint
+	envApiEndpoint := os.Getenv("SMARTPAY_API_PREFIX")
+	if envApiEndpoint != "" {
+		client.Server = envApiEndpoint
+	}
+
 	// mutate client and add all optional params
 	for _, o := range opts {
 		if err := o(&client); err != nil {

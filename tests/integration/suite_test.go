@@ -49,11 +49,10 @@ func NewCheckoutPayload() *CreateACheckoutSessionJSONRequestBody {
 func (suite *IntegrationTestSuite) SetupSuite() {
 	secretKey := os.Getenv("SMARTPAY_SECRET_KEY")
 	publicKey := os.Getenv("SMARTPAY_PUBLIC_KEY")
-	apiBase := os.Getenv("API_BASE")
 
 	suite.ctx = context.TODO()
 	var err error
-	suite.client, err = NewClientWithResponses(secretKey, publicKey, WithBaseURL(apiBase))
+	suite.client, err = NewClientWithResponses(secretKey, publicKey)
 	if err != nil {
 		panic(err)
 	}
