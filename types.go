@@ -1333,8 +1333,8 @@ type RetrieveARefundParams struct {
 // RetrieveARefundParamsExpand defines parameters for RetrieveARefund.
 type RetrieveARefundParamsExpand string
 
-// GetV1WebhookEndpointsParams defines parameters for GetV1WebhookEndpoints.
-type GetV1WebhookEndpointsParams struct {
+// ListAllWebhookEndpointsParams defines parameters for ListAllWebhookEndpoints.
+type ListAllWebhookEndpointsParams struct {
 	// Number of objects to return. Defaults to 20 if not set.
 	MaxResults *MaxResults `json:"maxResults,omitempty"`
 
@@ -1369,8 +1369,8 @@ type CreateARefundJSONRequestBody RefundCreate
 // UpdateARefundJSONRequestBody defines body for UpdateARefund for application/json ContentType.
 type UpdateARefundJSONRequestBody RefundUpdate
 
-// PostV1WebhookEndpointsJSONRequestBody defines body for PostV1WebhookEndpoints for application/json ContentType.
-type PostV1WebhookEndpointsJSONRequestBody WebhookEndpointCreate
+// CreateAWebhookEndpointJSONRequestBody defines body for CreateAWebhookEndpoint for application/json ContentType.
+type CreateAWebhookEndpointJSONRequestBody WebhookEndpointCreate
 
-// PatchV1WebhookEndpointsWebhookEndpointIdJSONRequestBody defines body for PatchV1WebhookEndpointsWebhookEndpointId for application/json ContentType.
-type PatchV1WebhookEndpointsWebhookEndpointIdJSONRequestBody WebhookEndpointUpdate
+// UpdateAWebhookEndpointJSONRequestBody defines body for UpdateAWebhookEndpoint for application/json ContentType.
+type UpdateAWebhookEndpointJSONRequestBody WebhookEndpointUpdate
