@@ -237,21 +237,21 @@ type ClientInterface interface {
 
 	UpdateARefund(ctx context.Context, refundId string, body UpdateARefundJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetV1WebhookEndpoints request
-	GetV1WebhookEndpoints(ctx context.Context, params *GetV1WebhookEndpointsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListAllWebhookEndpoints request
+	ListAllWebhookEndpoints(ctx context.Context, params *ListAllWebhookEndpointsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostV1WebhookEndpoints request with any body
-	PostV1WebhookEndpointsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateAWebhookEndpointWithBody request with any body
+	CreateAWebhookEndpointWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostV1WebhookEndpoints(ctx context.Context, body PostV1WebhookEndpointsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateAWebhookEndpoint(ctx context.Context, body CreateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetV1WebhookEndpointsWebhookEndpointId request
-	GetV1WebhookEndpointsWebhookEndpointId(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetrieveAWebhookEndpoint request
+	RetrieveAWebhookEndpoint(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PatchV1WebhookEndpointsWebhookEndpointId request with any body
-	PatchV1WebhookEndpointsWebhookEndpointIdWithBody(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateAWebhookEndpointWithBody request with any body
+	UpdateAWebhookEndpointWithBody(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PatchV1WebhookEndpointsWebhookEndpointId(ctx context.Context, webhookEndpointId string, body PatchV1WebhookEndpointsWebhookEndpointIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateAWebhookEndpoint(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 // ClientWithResponsesInterface is the interface specification for the client with responses.
@@ -340,19 +340,19 @@ type ClientWithResponsesInterface interface {
 
 	UpdateARefundWithResponse(ctx context.Context, refundId string, body UpdateARefundJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateARefundResponse, error)
 
-	// GetV1WebhookEndpoints request
-	GetV1WebhookEndpointsWithResponse(ctx context.Context, params *GetV1WebhookEndpointsParams, reqEditors ...RequestEditorFn) (*GetV1WebhookEndpointsResponse, error)
+	// ListAllWebhookEndpoints request
+	ListAllWebhookEndpointsWithResponse(ctx context.Context, params *ListAllWebhookEndpointsParams, reqEditors ...RequestEditorFn) (*ListAllWebhookEndpointsResponse, error)
 
-	// PostV1WebhookEndpoints request with any body
-	PostV1WebhookEndpointsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostV1WebhookEndpointsResponse, error)
+	// CreateAWebhookEndpoint request with any body
+	CreateAWebhookEndpointWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAWebhookEndpointResponse, error)
 
-	PostV1WebhookEndpointsWithResponse(ctx context.Context, body PostV1WebhookEndpointsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostV1WebhookEndpointsResponse, error)
+	CreateAWebhookEndpointWithResponse(ctx context.Context, body CreateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAWebhookEndpointResponse, error)
 
-	// GetV1WebhookEndpointsWebhookEndpointId request
-	GetV1WebhookEndpointsWebhookEndpointIdWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*GetV1WebhookEndpointsWebhookEndpointIdResponse, error)
+	// RetrieveAWebhookEndpoint request
+	RetrieveAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*RetrieveAWebhookEndpointResponse, error)
 
-	// PatchV1WebhookEndpointsWebhookEndpointId request with any body
-	PatchV1WebhookEndpointsWebhookEndpointIdWithBodyWithResponse(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchV1WebhookEndpointsWebhookEndpointIdResponse, error)
+	// UpdateAWebhookEndpoint request with any body
+	UpdateAWebhookEndpointWithBodyWithResponse(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error)
 
-	PatchV1WebhookEndpointsWebhookEndpointIdWithResponse(ctx context.Context, webhookEndpointId string, body PatchV1WebhookEndpointsWebhookEndpointIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchV1WebhookEndpointsWebhookEndpointIdResponse, error)
+	UpdateAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error)
 }

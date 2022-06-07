@@ -387,8 +387,8 @@ func (c *Client) UpdateARefund(ctx context.Context, refundId string, body Update
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetV1WebhookEndpoints(ctx context.Context, params *GetV1WebhookEndpointsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetV1WebhookEndpointsRequest(c.Server, params)
+func (c *Client) ListAllWebhookEndpoints(ctx context.Context, params *ListAllWebhookEndpointsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAllWebhookEndpointsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -399,8 +399,8 @@ func (c *Client) GetV1WebhookEndpoints(ctx context.Context, params *GetV1Webhook
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostV1WebhookEndpointsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostV1WebhookEndpointsRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateAWebhookEndpointWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAWebhookEndpointRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -411,8 +411,8 @@ func (c *Client) PostV1WebhookEndpointsWithBody(ctx context.Context, contentType
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostV1WebhookEndpoints(ctx context.Context, body PostV1WebhookEndpointsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostV1WebhookEndpointsRequest(c.Server, body)
+func (c *Client) CreateAWebhookEndpoint(ctx context.Context, body CreateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAWebhookEndpointRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -423,8 +423,8 @@ func (c *Client) PostV1WebhookEndpoints(ctx context.Context, body PostV1WebhookE
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetV1WebhookEndpointsWebhookEndpointId(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetV1WebhookEndpointsWebhookEndpointIdRequest(c.Server, webhookEndpointId)
+func (c *Client) RetrieveAWebhookEndpoint(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveAWebhookEndpointRequest(c.Server, webhookEndpointId)
 	if err != nil {
 		return nil, err
 	}
@@ -435,8 +435,8 @@ func (c *Client) GetV1WebhookEndpointsWebhookEndpointId(ctx context.Context, web
 	return c.Client.Do(req)
 }
 
-func (c *Client) PatchV1WebhookEndpointsWebhookEndpointIdWithBody(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchV1WebhookEndpointsWebhookEndpointIdRequestWithBody(c.Server, webhookEndpointId, contentType, body)
+func (c *Client) UpdateAWebhookEndpointWithBody(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAWebhookEndpointRequestWithBody(c.Server, webhookEndpointId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -447,8 +447,8 @@ func (c *Client) PatchV1WebhookEndpointsWebhookEndpointIdWithBody(ctx context.Co
 	return c.Client.Do(req)
 }
 
-func (c *Client) PatchV1WebhookEndpointsWebhookEndpointId(ctx context.Context, webhookEndpointId string, body PatchV1WebhookEndpointsWebhookEndpointIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchV1WebhookEndpointsWebhookEndpointIdRequest(c.Server, webhookEndpointId, body)
+func (c *Client) UpdateAWebhookEndpoint(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAWebhookEndpointRequest(c.Server, webhookEndpointId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1607,8 +1607,8 @@ func NewUpdateARefundRequestWithBody(server string, refundId string, contentType
 	return req, nil
 }
 
-// NewGetV1WebhookEndpointsRequest generates requests for GetV1WebhookEndpoints
-func NewGetV1WebhookEndpointsRequest(server string, params *GetV1WebhookEndpointsParams) (*http.Request, error) {
+// NewListAllWebhookEndpointsRequest generates requests for ListAllWebhookEndpoints
+func NewListAllWebhookEndpointsRequest(server string, params *ListAllWebhookEndpointsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1670,19 +1670,19 @@ func NewGetV1WebhookEndpointsRequest(server string, params *GetV1WebhookEndpoint
 	return req, nil
 }
 
-// NewPostV1WebhookEndpointsRequest calls the generic PostV1WebhookEndpoints builder with application/json body
-func NewPostV1WebhookEndpointsRequest(server string, body PostV1WebhookEndpointsJSONRequestBody) (*http.Request, error) {
+// NewCreateAWebhookEndpointRequest calls the generic CreateAWebhookEndpoint builder with application/json body
+func NewCreateAWebhookEndpointRequest(server string, body CreateAWebhookEndpointJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostV1WebhookEndpointsRequestWithBody(server, "application/json", bodyReader)
+	return NewCreateAWebhookEndpointRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewPostV1WebhookEndpointsRequestWithBody generates requests for PostV1WebhookEndpoints with any type of body
-func NewPostV1WebhookEndpointsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateAWebhookEndpointRequestWithBody generates requests for CreateAWebhookEndpoint with any type of body
+func NewCreateAWebhookEndpointRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1710,8 +1710,8 @@ func NewPostV1WebhookEndpointsRequestWithBody(server string, contentType string,
 	return req, nil
 }
 
-// NewGetV1WebhookEndpointsWebhookEndpointIdRequest generates requests for GetV1WebhookEndpointsWebhookEndpointId
-func NewGetV1WebhookEndpointsWebhookEndpointIdRequest(server string, webhookEndpointId string) (*http.Request, error) {
+// NewRetrieveAWebhookEndpointRequest generates requests for RetrieveAWebhookEndpoint
+func NewRetrieveAWebhookEndpointRequest(server string, webhookEndpointId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1744,19 +1744,19 @@ func NewGetV1WebhookEndpointsWebhookEndpointIdRequest(server string, webhookEndp
 	return req, nil
 }
 
-// NewPatchV1WebhookEndpointsWebhookEndpointIdRequest calls the generic PatchV1WebhookEndpointsWebhookEndpointId builder with application/json body
-func NewPatchV1WebhookEndpointsWebhookEndpointIdRequest(server string, webhookEndpointId string, body PatchV1WebhookEndpointsWebhookEndpointIdJSONRequestBody) (*http.Request, error) {
+// NewUpdateAWebhookEndpointRequest calls the generic UpdateAWebhookEndpoint builder with application/json body
+func NewUpdateAWebhookEndpointRequest(server string, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPatchV1WebhookEndpointsWebhookEndpointIdRequestWithBody(server, webhookEndpointId, "application/json", bodyReader)
+	return NewUpdateAWebhookEndpointRequestWithBody(server, webhookEndpointId, "application/json", bodyReader)
 }
 
-// NewPatchV1WebhookEndpointsWebhookEndpointIdRequestWithBody generates requests for PatchV1WebhookEndpointsWebhookEndpointId with any type of body
-func NewPatchV1WebhookEndpointsWebhookEndpointIdRequestWithBody(server string, webhookEndpointId string, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateAWebhookEndpointRequestWithBody generates requests for UpdateAWebhookEndpoint with any type of body
+func NewUpdateAWebhookEndpointRequestWithBody(server string, webhookEndpointId string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2602,7 +2602,7 @@ func (r UpdateARefundResponse) StatusCode() int {
 	return 0
 }
 
-type GetV1WebhookEndpointsResponse struct {
+type ListAllWebhookEndpointsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2631,7 +2631,7 @@ type GetV1WebhookEndpointsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetV1WebhookEndpointsResponse) Status() string {
+func (r ListAllWebhookEndpointsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2639,14 +2639,14 @@ func (r GetV1WebhookEndpointsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetV1WebhookEndpointsResponse) StatusCode() int {
+func (r ListAllWebhookEndpointsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostV1WebhookEndpointsResponse struct {
+type CreateAWebhookEndpointResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *WebhookEndpoint
@@ -2658,7 +2658,7 @@ type PostV1WebhookEndpointsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostV1WebhookEndpointsResponse) Status() string {
+func (r CreateAWebhookEndpointResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2666,14 +2666,14 @@ func (r PostV1WebhookEndpointsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostV1WebhookEndpointsResponse) StatusCode() int {
+func (r CreateAWebhookEndpointResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetV1WebhookEndpointsWebhookEndpointIdResponse struct {
+type RetrieveAWebhookEndpointResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *WebhookEndpoint
@@ -2691,7 +2691,7 @@ type GetV1WebhookEndpointsWebhookEndpointIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetV1WebhookEndpointsWebhookEndpointIdResponse) Status() string {
+func (r RetrieveAWebhookEndpointResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2699,14 +2699,14 @@ func (r GetV1WebhookEndpointsWebhookEndpointIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetV1WebhookEndpointsWebhookEndpointIdResponse) StatusCode() int {
+func (r RetrieveAWebhookEndpointResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PatchV1WebhookEndpointsWebhookEndpointIdResponse struct {
+type UpdateAWebhookEndpointResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *WebhookEndpoint
@@ -2719,7 +2719,7 @@ type PatchV1WebhookEndpointsWebhookEndpointIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PatchV1WebhookEndpointsWebhookEndpointIdResponse) Status() string {
+func (r UpdateAWebhookEndpointResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2727,7 +2727,7 @@ func (r PatchV1WebhookEndpointsWebhookEndpointIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PatchV1WebhookEndpointsWebhookEndpointIdResponse) StatusCode() int {
+func (r UpdateAWebhookEndpointResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3006,56 +3006,56 @@ func (c *ClientWithResponses) UpdateARefundWithResponse(ctx context.Context, ref
 	return ParseUpdateARefundResponse(rsp)
 }
 
-// GetV1WebhookEndpointsWithResponse request returning *GetV1WebhookEndpointsResponse
-func (c *ClientWithResponses) GetV1WebhookEndpointsWithResponse(ctx context.Context, params *GetV1WebhookEndpointsParams, reqEditors ...RequestEditorFn) (*GetV1WebhookEndpointsResponse, error) {
-	rsp, err := c.GetV1WebhookEndpoints(ctx, params, reqEditors...)
+// ListAllWebhookEndpointsWithResponse request returning *ListAllWebhookEndpointsResponse
+func (c *ClientWithResponses) ListAllWebhookEndpointsWithResponse(ctx context.Context, params *ListAllWebhookEndpointsParams, reqEditors ...RequestEditorFn) (*ListAllWebhookEndpointsResponse, error) {
+	rsp, err := c.ListAllWebhookEndpoints(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetV1WebhookEndpointsResponse(rsp)
+	return ParseListAllWebhookEndpointsResponse(rsp)
 }
 
-// PostV1WebhookEndpointsWithBodyWithResponse request with arbitrary body returning *PostV1WebhookEndpointsResponse
-func (c *ClientWithResponses) PostV1WebhookEndpointsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostV1WebhookEndpointsResponse, error) {
-	rsp, err := c.PostV1WebhookEndpointsWithBody(ctx, contentType, body, reqEditors...)
+// CreateAWebhookEndpointWithBodyWithResponse request with arbitrary body returning *CreateAWebhookEndpointResponse
+func (c *ClientWithResponses) CreateAWebhookEndpointWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAWebhookEndpointResponse, error) {
+	rsp, err := c.CreateAWebhookEndpointWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostV1WebhookEndpointsResponse(rsp)
+	return ParseCreateAWebhookEndpointResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostV1WebhookEndpointsWithResponse(ctx context.Context, body PostV1WebhookEndpointsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostV1WebhookEndpointsResponse, error) {
-	rsp, err := c.PostV1WebhookEndpoints(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreateAWebhookEndpointWithResponse(ctx context.Context, body CreateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAWebhookEndpointResponse, error) {
+	rsp, err := c.CreateAWebhookEndpoint(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostV1WebhookEndpointsResponse(rsp)
+	return ParseCreateAWebhookEndpointResponse(rsp)
 }
 
-// GetV1WebhookEndpointsWebhookEndpointIdWithResponse request returning *GetV1WebhookEndpointsWebhookEndpointIdResponse
-func (c *ClientWithResponses) GetV1WebhookEndpointsWebhookEndpointIdWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*GetV1WebhookEndpointsWebhookEndpointIdResponse, error) {
-	rsp, err := c.GetV1WebhookEndpointsWebhookEndpointId(ctx, webhookEndpointId, reqEditors...)
+// RetrieveAWebhookEndpointWithResponse request returning *RetrieveAWebhookEndpointResponse
+func (c *ClientWithResponses) RetrieveAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*RetrieveAWebhookEndpointResponse, error) {
+	rsp, err := c.RetrieveAWebhookEndpoint(ctx, webhookEndpointId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetV1WebhookEndpointsWebhookEndpointIdResponse(rsp)
+	return ParseRetrieveAWebhookEndpointResponse(rsp)
 }
 
-// PatchV1WebhookEndpointsWebhookEndpointIdWithBodyWithResponse request with arbitrary body returning *PatchV1WebhookEndpointsWebhookEndpointIdResponse
-func (c *ClientWithResponses) PatchV1WebhookEndpointsWebhookEndpointIdWithBodyWithResponse(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchV1WebhookEndpointsWebhookEndpointIdResponse, error) {
-	rsp, err := c.PatchV1WebhookEndpointsWebhookEndpointIdWithBody(ctx, webhookEndpointId, contentType, body, reqEditors...)
+// UpdateAWebhookEndpointWithBodyWithResponse request with arbitrary body returning *UpdateAWebhookEndpointResponse
+func (c *ClientWithResponses) UpdateAWebhookEndpointWithBodyWithResponse(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error) {
+	rsp, err := c.UpdateAWebhookEndpointWithBody(ctx, webhookEndpointId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePatchV1WebhookEndpointsWebhookEndpointIdResponse(rsp)
+	return ParseUpdateAWebhookEndpointResponse(rsp)
 }
 
-func (c *ClientWithResponses) PatchV1WebhookEndpointsWebhookEndpointIdWithResponse(ctx context.Context, webhookEndpointId string, body PatchV1WebhookEndpointsWebhookEndpointIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchV1WebhookEndpointsWebhookEndpointIdResponse, error) {
-	rsp, err := c.PatchV1WebhookEndpointsWebhookEndpointId(ctx, webhookEndpointId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error) {
+	rsp, err := c.UpdateAWebhookEndpoint(ctx, webhookEndpointId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePatchV1WebhookEndpointsWebhookEndpointIdResponse(rsp)
+	return ParseUpdateAWebhookEndpointResponse(rsp)
 }
 
 // ParseListAllCheckoutSessionsResponse parses an HTTP response from a ListAllCheckoutSessionsWithResponse call
@@ -4205,15 +4205,15 @@ func ParseUpdateARefundResponse(rsp *http.Response) (*UpdateARefundResponse, err
 	return response, nil
 }
 
-// ParseGetV1WebhookEndpointsResponse parses an HTTP response from a GetV1WebhookEndpointsWithResponse call
-func ParseGetV1WebhookEndpointsResponse(rsp *http.Response) (*GetV1WebhookEndpointsResponse, error) {
+// ParseListAllWebhookEndpointsResponse parses an HTTP response from a ListAllWebhookEndpointsWithResponse call
+func ParseListAllWebhookEndpointsResponse(rsp *http.Response) (*ListAllWebhookEndpointsResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetV1WebhookEndpointsResponse{
+	response := &ListAllWebhookEndpointsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4259,15 +4259,15 @@ func ParseGetV1WebhookEndpointsResponse(rsp *http.Response) (*GetV1WebhookEndpoi
 	return response, nil
 }
 
-// ParsePostV1WebhookEndpointsResponse parses an HTTP response from a PostV1WebhookEndpointsWithResponse call
-func ParsePostV1WebhookEndpointsResponse(rsp *http.Response) (*PostV1WebhookEndpointsResponse, error) {
+// ParseCreateAWebhookEndpointResponse parses an HTTP response from a CreateAWebhookEndpointWithResponse call
+func ParseCreateAWebhookEndpointResponse(rsp *http.Response) (*CreateAWebhookEndpointResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostV1WebhookEndpointsResponse{
+	response := &CreateAWebhookEndpointResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4296,15 +4296,15 @@ func ParsePostV1WebhookEndpointsResponse(rsp *http.Response) (*PostV1WebhookEndp
 	return response, nil
 }
 
-// ParseGetV1WebhookEndpointsWebhookEndpointIdResponse parses an HTTP response from a GetV1WebhookEndpointsWebhookEndpointIdWithResponse call
-func ParseGetV1WebhookEndpointsWebhookEndpointIdResponse(rsp *http.Response) (*GetV1WebhookEndpointsWebhookEndpointIdResponse, error) {
+// ParseRetrieveAWebhookEndpointResponse parses an HTTP response from a RetrieveAWebhookEndpointWithResponse call
+func ParseRetrieveAWebhookEndpointResponse(rsp *http.Response) (*RetrieveAWebhookEndpointResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetV1WebhookEndpointsWebhookEndpointIdResponse{
+	response := &RetrieveAWebhookEndpointResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4345,15 +4345,15 @@ func ParseGetV1WebhookEndpointsWebhookEndpointIdResponse(rsp *http.Response) (*G
 	return response, nil
 }
 
-// ParsePatchV1WebhookEndpointsWebhookEndpointIdResponse parses an HTTP response from a PatchV1WebhookEndpointsWebhookEndpointIdWithResponse call
-func ParsePatchV1WebhookEndpointsWebhookEndpointIdResponse(rsp *http.Response) (*PatchV1WebhookEndpointsWebhookEndpointIdResponse, error) {
+// ParseUpdateAWebhookEndpointResponse parses an HTTP response from a UpdateAWebhookEndpointWithResponse call
+func ParseUpdateAWebhookEndpointResponse(rsp *http.Response) (*UpdateAWebhookEndpointResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PatchV1WebhookEndpointsWebhookEndpointIdResponse{
+	response := &UpdateAWebhookEndpointResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
