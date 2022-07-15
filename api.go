@@ -459,6 +459,18 @@ func (c *Client) UpdateAWebhookEndpoint(ctx context.Context, webhookEndpointId s
 	return c.Client.Do(req)
 }
 
+func (c *Client) DeleteAWebhookEndpoint(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAWebhookEndpointRequest(c.Server, webhookEndpointId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // NewListAllCheckoutSessionsRequest generates requests for ListAllCheckoutSessions
 func NewListAllCheckoutSessionsRequest(server string, params *ListAllCheckoutSessionsParams) (*http.Request, error) {
 	var err error
@@ -1791,6 +1803,40 @@ func NewUpdateAWebhookEndpointRequestWithBody(server string, webhookEndpointId s
 	return req, nil
 }
 
+// NewDeleteAWebhookEndpointRequest generates requests for RetrieveAWebhookEndpoint
+func NewDeleteAWebhookEndpointRequest(server string, webhookEndpointId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "webhookEndpointId", runtime.ParamLocationPath, webhookEndpointId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/webhook-endpoints/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 type ListAllCheckoutSessionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2734,6 +2780,38 @@ func (r UpdateAWebhookEndpointResponse) StatusCode() int {
 	return 0
 }
 
+type DeleteAWebhookEndpointResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{} `json:"details"`
+		ErrorCode  string        `json:"errorCode"`
+		Message    string        `json:"message"`
+		StatusCode float32       `json:"statusCode"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteAWebhookEndpointResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteAWebhookEndpointResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // ListAllCheckoutSessionsWithResponse request returning *ListAllCheckoutSessionsResponse
 func (c *ClientWithResponses) ListAllCheckoutSessionsWithResponse(ctx context.Context, params *ListAllCheckoutSessionsParams, reqEditors ...RequestEditorFn) (*ListAllCheckoutSessionsResponse, error) {
 	rsp, err := c.ListAllCheckoutSessions(ctx, params, reqEditors...)
@@ -3056,6 +3134,15 @@ func (c *ClientWithResponses) UpdateAWebhookEndpointWithResponse(ctx context.Con
 		return nil, err
 	}
 	return ParseUpdateAWebhookEndpointResponse(rsp)
+}
+
+// DeleteAWebhookEndpointWithResponse request returning *DeleteAWebhookEndpointResponse
+func (c *ClientWithResponses) DeleteAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*DeleteAWebhookEndpointResponse, error) {
+	rsp, err := c.DeleteAWebhookEndpoint(ctx, webhookEndpointId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteAWebhookEndpointResponse(rsp)
 }
 
 // ParseListAllCheckoutSessionsResponse parses an HTTP response from a ListAllCheckoutSessionsWithResponse call
@@ -4365,6 +4452,48 @@ func ParseUpdateAWebhookEndpointResponse(rsp *http.Response) (*UpdateAWebhookEnd
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{} `json:"details"`
+			ErrorCode  string        `json:"errorCode"`
+			Message    string        `json:"message"`
+			StatusCode float32       `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteAWebhookEndpointResponse parses an HTTP response from a DeleteAWebhookEndpointWithResponse call
+func ParseDeleteAWebhookEndpointResponse(rsp *http.Response) (*DeleteAWebhookEndpointResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteAWebhookEndpointResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
 		var dest struct {

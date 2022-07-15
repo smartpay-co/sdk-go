@@ -153,206 +153,172 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // The interface specification for the client.
 type ClientInterface interface {
-	// ListAllCheckoutSessions request
+	// CheckoutSession
 	ListAllCheckoutSessions(ctx context.Context, params *ListAllCheckoutSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateACheckoutSession request with any body
 	CreateACheckoutSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateACheckoutSession(ctx context.Context, body CreateACheckoutSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveACheckoutSession request
 	RetrieveACheckoutSession(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAllCoupons request
+	// Coupon
 	ListAllCoupons(ctx context.Context, params *ListAllCouponsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateACoupon request with any body
 	CreateACouponWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateACoupon(ctx context.Context, body CreateACouponJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveACoupon request
 	RetrieveACoupon(ctx context.Context, couponId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateACoupon request with any body
 	UpdateACouponWithBody(ctx context.Context, couponId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateACoupon(ctx context.Context, couponId string, body UpdateACouponJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAllOrders request
+	// Order
 	ListAllOrders(ctx context.Context, params *ListAllOrdersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveAnOrder request
 	RetrieveAnOrder(ctx context.Context, orderId string, params *RetrieveAnOrderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CancelAnOrder request
 	CancelAnOrder(ctx context.Context, orderId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateAPayment request with any body
+	// Payment
 	UpdateAPaymentWithBody(ctx context.Context, paymentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateAPayment(ctx context.Context, paymentId string, body UpdateAPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAllPayments request
 	ListAllPayments(ctx context.Context, params *ListAllPaymentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveAPayment request
 	RetrieveAPayment(ctx context.Context, paymentId string, params *RetrieveAPaymentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateAPayment request with any body
 	CreateAPaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateAPayment(ctx context.Context, body CreateAPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAllPromotionCodes request
+	// PromotionCode
 	ListAllPromotionCodes(ctx context.Context, params *ListAllPromotionCodesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateAPromotionCode request with any body
 	CreateAPromotionCodeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateAPromotionCode(ctx context.Context, body CreateAPromotionCodeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveAPromotionCode request
 	RetrieveAPromotionCode(ctx context.Context, promotionCodeId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateAPromotionCode request with any body
 	UpdateAPromotionCodeWithBody(ctx context.Context, promotionCodeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateAPromotionCode(ctx context.Context, promotionCodeId string, body UpdateAPromotionCodeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAllRefunds request
+	// Refund
 	ListAllRefunds(ctx context.Context, params *ListAllRefundsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateARefund request with any body
 	CreateARefundWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateARefund(ctx context.Context, body CreateARefundJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveARefund request
 	RetrieveARefund(ctx context.Context, refundId string, params *RetrieveARefundParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateARefund request with any body
 	UpdateARefundWithBody(ctx context.Context, refundId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateARefund(ctx context.Context, refundId string, body UpdateARefundJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAllWebhookEndpoints request
+	// WebhookEndpoint
 	ListAllWebhookEndpoints(ctx context.Context, params *ListAllWebhookEndpointsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateAWebhookEndpointWithBody request with any body
 	CreateAWebhookEndpointWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateAWebhookEndpoint(ctx context.Context, body CreateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RetrieveAWebhookEndpoint request
 	RetrieveAWebhookEndpoint(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateAWebhookEndpointWithBody request with any body
 	UpdateAWebhookEndpointWithBody(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateAWebhookEndpoint(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteAWebhookEndpoint(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 // ClientWithResponsesInterface is the interface specification for the client with responses.
 type ClientWithResponsesInterface interface {
-	// ListAllCheckoutSessions request
+	// CheckoutSession
 	ListAllCheckoutSessionsWithResponse(ctx context.Context, params *ListAllCheckoutSessionsParams, reqEditors ...RequestEditorFn) (*ListAllCheckoutSessionsResponse, error)
 
-	// CreateACheckoutSession request with any body
 	CreateACheckoutSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
 
 	CreateACheckoutSessionWithResponse(ctx context.Context, body CreateACheckoutSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
 
-	// RetrieveACheckoutSession request
 	RetrieveACheckoutSessionWithResponse(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*RetrieveACheckoutSessionResponse, error)
 
-	// ListAllCoupons request
+	// Coupon
 	ListAllCouponsWithResponse(ctx context.Context, params *ListAllCouponsParams, reqEditors ...RequestEditorFn) (*ListAllCouponsResponse, error)
 
-	// CreateACoupon request with any body
 	CreateACouponWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateACouponResponse, error)
 
 	CreateACouponWithResponse(ctx context.Context, body CreateACouponJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateACouponResponse, error)
 
-	// RetrieveACoupon request
 	RetrieveACouponWithResponse(ctx context.Context, couponId string, reqEditors ...RequestEditorFn) (*RetrieveACouponResponse, error)
 
-	// UpdateACoupon request with any body
 	UpdateACouponWithBodyWithResponse(ctx context.Context, couponId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateACouponResponse, error)
 
 	UpdateACouponWithResponse(ctx context.Context, couponId string, body UpdateACouponJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateACouponResponse, error)
 
-	// ListAllOrders request
+	// Order
 	ListAllOrdersWithResponse(ctx context.Context, params *ListAllOrdersParams, reqEditors ...RequestEditorFn) (*ListAllOrdersResponse, error)
 
-	// RetrieveAnOrder request
 	RetrieveAnOrderWithResponse(ctx context.Context, orderId string, params *RetrieveAnOrderParams, reqEditors ...RequestEditorFn) (*RetrieveAnOrderResponse, error)
 
-	// CancelAnOrder request
 	CancelAnOrderWithResponse(ctx context.Context, orderId string, reqEditors ...RequestEditorFn) (*CancelAnOrderResponse, error)
 
-	// UpdateAPayment request with any body
+	// Payment
 	UpdateAPaymentWithBodyWithResponse(ctx context.Context, paymentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAPaymentResponse, error)
 
 	UpdateAPaymentWithResponse(ctx context.Context, paymentId string, body UpdateAPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAPaymentResponse, error)
 
-	// ListAllPayments request
 	ListAllPaymentsWithResponse(ctx context.Context, params *ListAllPaymentsParams, reqEditors ...RequestEditorFn) (*ListAllPaymentsResponse, error)
 
-	// RetrieveAPayment request
 	RetrieveAPaymentWithResponse(ctx context.Context, paymentId string, params *RetrieveAPaymentParams, reqEditors ...RequestEditorFn) (*RetrieveAPaymentResponse, error)
 
-	// CreateAPayment request with any body
 	CreateAPaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAPaymentResponse, error)
 
 	CreateAPaymentWithResponse(ctx context.Context, body CreateAPaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAPaymentResponse, error)
 
-	// ListAllPromotionCodes request
+	// PromotionCode
 	ListAllPromotionCodesWithResponse(ctx context.Context, params *ListAllPromotionCodesParams, reqEditors ...RequestEditorFn) (*ListAllPromotionCodesResponse, error)
 
-	// CreateAPromotionCode request with any body
 	CreateAPromotionCodeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAPromotionCodeResponse, error)
 
 	CreateAPromotionCodeWithResponse(ctx context.Context, body CreateAPromotionCodeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAPromotionCodeResponse, error)
 
-	// RetrieveAPromotionCode request
 	RetrieveAPromotionCodeWithResponse(ctx context.Context, promotionCodeId string, reqEditors ...RequestEditorFn) (*RetrieveAPromotionCodeResponse, error)
 
-	// UpdateAPromotionCode request with any body
 	UpdateAPromotionCodeWithBodyWithResponse(ctx context.Context, promotionCodeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAPromotionCodeResponse, error)
 
 	UpdateAPromotionCodeWithResponse(ctx context.Context, promotionCodeId string, body UpdateAPromotionCodeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAPromotionCodeResponse, error)
 
-	// ListAllRefunds request
+	// Refund
 	ListAllRefundsWithResponse(ctx context.Context, params *ListAllRefundsParams, reqEditors ...RequestEditorFn) (*ListAllRefundsResponse, error)
 
-	// CreateARefund request with any body
 	CreateARefundWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateARefundResponse, error)
 
 	CreateARefundWithResponse(ctx context.Context, body CreateARefundJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateARefundResponse, error)
 
-	// RetrieveARefund request
 	RetrieveARefundWithResponse(ctx context.Context, refundId string, params *RetrieveARefundParams, reqEditors ...RequestEditorFn) (*RetrieveARefundResponse, error)
 
-	// UpdateARefund request with any body
 	UpdateARefundWithBodyWithResponse(ctx context.Context, refundId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateARefundResponse, error)
 
 	UpdateARefundWithResponse(ctx context.Context, refundId string, body UpdateARefundJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateARefundResponse, error)
 
-	// ListAllWebhookEndpoints request
+	// WebhookEndpoint
 	ListAllWebhookEndpointsWithResponse(ctx context.Context, params *ListAllWebhookEndpointsParams, reqEditors ...RequestEditorFn) (*ListAllWebhookEndpointsResponse, error)
 
-	// CreateAWebhookEndpoint request with any body
 	CreateAWebhookEndpointWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAWebhookEndpointResponse, error)
 
 	CreateAWebhookEndpointWithResponse(ctx context.Context, body CreateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAWebhookEndpointResponse, error)
 
-	// RetrieveAWebhookEndpoint request
 	RetrieveAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*RetrieveAWebhookEndpointResponse, error)
 
-	// UpdateAWebhookEndpoint request with any body
 	UpdateAWebhookEndpointWithBodyWithResponse(ctx context.Context, webhookEndpointId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error)
 
 	UpdateAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error)
+
+	DeleteAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*DeleteAWebhookEndpointResponse, error)
 }

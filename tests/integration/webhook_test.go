@@ -5,8 +5,7 @@ import (
 )
 
 func (suite *IntegrationTestSuite) TestCreateAWebhookEndpoint() {
-	// Disable this tests suite by default to avoid hitting the max webhook endpoints limit.
-	suite.T().Skip()
+	//suite.T().Skip()
 	payload := CreateAWebhookEndpointJSONRequestBody{
 		EventSubscriptions: Ptr([]EventSubscription{
 			EventSubscriptionMerchantUserCreated,
@@ -52,5 +51,12 @@ func (suite *IntegrationTestSuite) TestCreateAWebhookEndpoint() {
 		suite.NotNil(result.JSON200)
 		obj, _ := ConvertToStruct[WebhookEndpoint]((*result.JSON200.Data)[0])
 		suite.NotNil(obj.Id)
+	})
+
+	suite.Run("TestDeleteAWebhookEndpoint", func() {
+		result, err := suite.client.DeleteAWebhookEndpointWithResponse(suite.ctx, webhookEndpointId)
+		suite.Nil(err)
+		suite.NotNil(result.Body)
+		suite.EqualValues(result.StatusCode(), 204)
 	})
 }
