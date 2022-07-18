@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/deepmap/oapi-codegen v1.10.1
+	github.com/eknkc/basex v1.0.1
 	github.com/google/uuid v1.3.0
 	github.com/imroc/req/v3 v3.11.4
 	github.com/stretchr/testify v1.7.1
