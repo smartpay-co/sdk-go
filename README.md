@@ -12,7 +12,7 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/smartpay-cp/sdk-go">
+  <a href="https://github.com/smartpay-co/sdk-go">
 		<picture>
 			<source media="(prefers-color-scheme: dark)" srcset="https://assets.smartpay.co/logo/banner/smartpay-logo-dark.png" />
 			<source media="(prefers-color-scheme: light)" srcset="https://assets.smartpay.co/logo/banner/smartpay-logo.png" />
