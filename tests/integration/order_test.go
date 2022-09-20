@@ -80,6 +80,19 @@ func (suite *IntegrationTestSuite) TestRetrieveAnOrderExpanded() {
 
 	order, _ := ConvertToStruct[OrderExpanded](result.JSON200)
 	suite.NotNil(order.Id)
+
+	suite.Run("TestRetrieveAnOrderExpandedSupportsNewLineItem", func() {
+		for _, item := range *order.LineItems {
+			if *item.Kind == LineItemKindTax {
+				suite.EqualValues(int(*item.Amount), 250)
+				suite.EqualValues(*item.Currency, CurrencyJPY)
+			}
+			if *item.Kind == LineItemKindDiscount {
+				suite.EqualValues(int(*item.Amount), 100)
+				suite.EqualValues(*item.Currency, CurrencyJPY)
+			}
+		}
+	})
 }
 
 func (suite *IntegrationTestSuite) TestCancelAnOrder() {

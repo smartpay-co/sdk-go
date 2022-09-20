@@ -158,3 +158,10 @@ const (
 
 	ExpandNo Expand = "no"
 )
+
+// Defines values for LineItemKind
+const (
+	LineItemKindProduct  LineItemKind = "product"
+	LineItemKindDiscount LineItemKind = "discount"
+	LineItemKindTax      LineItemKind = "tax"
+)
