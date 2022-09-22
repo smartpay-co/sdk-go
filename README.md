@@ -67,7 +67,9 @@ func main() {
 		Currency: CurrencyJPY,
 		Amount:   350,
 		Items: []Item{
-			{Name: "レブロン 18 LOW", Amount: 250, Currency: CurrencyJPY, Quantity: 1},
+			{Name: "レブロン 18 LOW", Amount: 1000, Currency: CurrencyJPY, Quantity: Ptr(1)},
+			{Name: "discount", Amount: 100, Currency: CurrencyJPY, Kind: Ptr(LineItemKindDiscount)},
+			{Name: "tax", Amount: 250, Currency: CurrencyJPY, Kind: Ptr(LineItemKindTax)},
 		},
 		ShippingInfo: ShippingInfo{
 			Address:     Address{Country: AddressCountryJP, PostalCode: "123", Locality: "locality", Line1: "line1"},

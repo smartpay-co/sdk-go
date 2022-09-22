@@ -266,10 +266,16 @@ type EventSubscription string
 // A URL for an image for this product, meant to be displayed to the customer.
 type ImageUrl string
 
+// LineItem Kind
+type LineItemKind string
+
 // Item
 type Item struct {
 	// The unit amount of this line item.
 	Amount float32 `json:"amount"`
+
+	// The kind of this line item. Can be either of product, tax and discount. If non given it will be treated as a product
+	Kind *LineItemKind `json:"kind,omitempty"`
 
 	// The brand of the Product.
 	Brand *string `json:"brand,omitempty"`
@@ -306,7 +312,7 @@ type Item struct {
 	ProductMetadata *Metadata `json:"productMetadata,omitempty"`
 
 	// The quantity of products. Needs to be positive or zero.
-	Quantity int `json:"quantity"`
+	Quantity *int `json:"quantity,omitempty"`
 
 	// A - ideally unique - string to reference the Product in your system (e.g. a product ID, etc.).
 	Reference *string `json:"reference,omitempty"`
@@ -320,6 +326,15 @@ type LineItemExpanded struct {
 	// Time at which the object was created. Measured in milliseconds since the Unix epoch.
 	CreatedAt   *CreatedAt `json:"createdAt,omitempty"`
 	Description *string    `json:"description,omitempty"`
+
+	// The kind of this line item. Can be either of product, tax and discount. If non given it will be treated as a product
+	Kind *LineItemKind `json:"kind,omitempty"`
+
+	// The unit amount of this line item.
+	Amount *float32 `json:"amount,omitempty"`
+
+	// Three-letter ISO currency code, in uppercase. Must be a supported currency.
+	Currency *Currency `json:"currency,omitempty"`
 
 	// The unique identifier for the Line Item object.
 	Id *LineItemId `json:"id,omitempty"`
