@@ -22,7 +22,7 @@ type IntegrationTestSuite struct {
 	testCancelOrderId string
 }
 
-func TestCheckOutTestSuite(t *testing.T) {
+func TestIntegrationTestSuite(t *testing.T) {
 	suite.Run(t, new(IntegrationTestSuite))
 }
 

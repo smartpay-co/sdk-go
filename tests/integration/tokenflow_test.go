@@ -4,7 +4,7 @@ import (
 	. "github.com/smartpay-co/sdk-go"
 )
 
-func (suite *IntegrationTestSuite) TestTokenFlow() {
+func (suite *IntegrationTestSuite) TestCreateACheckoutSessionForAToken() {
 	//suite.T().Skip()
 	checkoutPayload := CreateACheckoutSessionForATokenJSONRequestBody{
 		Mode:       ModeToken,
