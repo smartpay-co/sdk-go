@@ -159,9 +159,23 @@ const (
 	ExpandNo Expand = "no"
 )
 
-// Defines values for LineItemKind
+// Defines values for LineItemKind.
 const (
 	LineItemKindProduct  LineItemKind = "product"
 	LineItemKindDiscount LineItemKind = "discount"
 	LineItemKindTax      LineItemKind = "tax"
+)
+
+// Defines values for Mode.
+const (
+	ModeToken Mode = "token"
+)
+
+// Defines values for TokenStatus.
+const (
+	TokenStatusRequiresAuthorization TokenStatus = "requires_authorization"
+	TokenStatusActive                TokenStatus = "active"
+	TokenStatusRejected              TokenStatus = "rejected"
+	TokenStatusDisabled              TokenStatus = "disabled"
+	TokenStatusDeleted               TokenStatus = "deleted"
 )

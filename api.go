@@ -50,6 +50,18 @@ func (c *Client) CreateACheckoutSession(ctx context.Context, body CreateACheckou
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateACheckoutSessionForAToken(ctx context.Context, body CreateACheckoutSessionForATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateACheckoutSessionForATokenRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) RetrieveACheckoutSession(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRetrieveACheckoutSessionRequest(c.Server, checkoutSessionId, params)
 	if err != nil {
@@ -137,6 +149,30 @@ func (c *Client) UpdateACoupon(ctx context.Context, couponId string, body Update
 
 func (c *Client) ListAllOrders(ctx context.Context, params *ListAllOrdersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListAllOrdersRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAnOrderUsingATokenWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAnOrderUsingATokenRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAnOrderUsingAToken(ctx context.Context, body CreateAnOrderUsingATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAnOrderUsingATokenRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -562,6 +598,18 @@ func NewCreateACheckoutSessionRequest(server string, body CreateACheckoutSession
 	return NewCreateACheckoutSessionRequestWithBody(server, "application/json", bodyReader)
 }
 
+// NewCreateACheckoutSessionForATokenRequest calls the generic CreateACheckoutSession builder with application/json body
+func NewCreateACheckoutSessionForATokenRequest(server string, body CreateACheckoutSessionForATokenJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateACheckoutSessionRequestWithBody(server, "application/json", bodyReader)
+}
+
 // NewCreateACheckoutSessionRequestWithBody generates requests for CreateACheckoutSession with any type of body
 func NewCreateACheckoutSessionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
@@ -903,6 +951,47 @@ func NewListAllOrdersRequest(server string, params *ListAllOrdersParams) (*http.
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewCreateAnOrderUsingATokenRequest calls the generic CreateAnOrderUsingAToken builder with application/json body
+func NewCreateAnOrderUsingATokenRequest(server string, body CreateAnOrderUsingATokenJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateAnOrderUsingATokenRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateAnOrderUsingATokenRequestWithBody generates requests for CreateAnOrderUsingAToken with any type of body
+func NewCreateAnOrderUsingATokenRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/orders")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -2129,6 +2218,40 @@ func (r ListAllOrdersResponse) StatusCode() int {
 	return 0
 }
 
+type CreateAnOrderUsingATokenResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *OrderExpanded
+	JSON400      *interface{}
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{}  `json:"details"`
+		ErrorCode  N404ErrorCode  `json:"errorCode"`
+		Message    string         `json:"message"`
+		StatusCode N404StatusCode `json:"statusCode"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateAnOrderUsingATokenResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateAnOrderUsingATokenResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type RetrieveAnOrderResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2839,6 +2962,24 @@ func (c *ClientWithResponses) CreateACheckoutSessionWithResponse(ctx context.Con
 	return ParseCreateACheckoutSessionResponse(rsp)
 }
 
+// CreateACheckoutSessionForATokenWithBodyWithResponse request with arbitrary body returning *CreateACheckoutSessionResponse
+func (c *ClientWithResponses) CreateACheckoutSessionForATokenWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error) {
+	rsp, err := c.CreateACheckoutSessionWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateACheckoutSessionResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateACheckoutSessionForATokenWithResponse(ctx context.Context, body CreateACheckoutSessionForATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error) {
+	rsp, err := c.CreateACheckoutSessionForAToken(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+
+	return ParseCreateACheckoutSessionResponse(rsp)
+}
+
 // RetrieveACheckoutSessionWithResponse request returning *RetrieveACheckoutSessionResponse
 func (c *ClientWithResponses) RetrieveACheckoutSessionWithResponse(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*RetrieveACheckoutSessionResponse, error) {
 	rsp, err := c.RetrieveACheckoutSession(ctx, checkoutSessionId, params, reqEditors...)
@@ -2908,6 +3049,24 @@ func (c *ClientWithResponses) ListAllOrdersWithResponse(ctx context.Context, par
 		return nil, err
 	}
 	return ParseListAllOrdersResponse(rsp)
+}
+
+// CreateAnOrderUsingATokenWithBodyWithResponse request with arbitrary body returning *CreateAnOrderUsingATokenResponse
+func (c *ClientWithResponses) CreateAnOrderUsingATokenWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAnOrderUsingATokenResponse, error) {
+	rsp, err := c.CreateAnOrderUsingATokenWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAnOrderUsingATokenResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateAnOrderUsingATokenWithResponse(ctx context.Context, body CreateAnOrderUsingATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAnOrderUsingATokenResponse, error) {
+	rsp, err := c.CreateAnOrderUsingAToken(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+
+	return ParseCreateAnOrderUsingATokenResponse(rsp)
 }
 
 // RetrieveAnOrderWithResponse request returning *RetrieveAnOrderResponse
@@ -3538,6 +3697,62 @@ func ParseListAllOrdersResponse(rsp *http.Response) (*ListAllOrdersResponse, err
 		}
 		response.JSON401 = &dest
 
+	}
+
+	return response, nil
+}
+
+// ParseCreateAnOrderUsingATokenResponse parses an HTTP response from a CreateAnOrderUsingATokenWithResponse call
+func ParseCreateAnOrderUsingATokenResponse(rsp *http.Response) (*CreateAnOrderUsingATokenResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateAnOrderUsingATokenResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OrderExpanded
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{}  `json:"details"`
+			ErrorCode  N404ErrorCode  `json:"errorCode"`
+			Message    string         `json:"message"`
+			StatusCode N404StatusCode `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 	}
 
 	return response, nil

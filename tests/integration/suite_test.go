@@ -101,6 +101,20 @@ func authorizeOrder(orderId string) (err error) {
 	return
 }
 
+func authorizeToken(tokenId string) (err error) {
+	apiPath, _ := url.Parse(os.Getenv("API_BASE"))
+	apiPath.Path = path.Join(apiPath.Path, fmt.Sprintf("/tokens/%s/approve", tokenId))
+	accessToken, err := retrieveAccessToken()
+	if err != nil {
+		return
+	}
+	//req.DevMode()
+	httpClient := req.C().SetLogger(nil) //.EnableDumpAllWithoutResponse()
+	_, err = httpClient.R().SetBearerAuthToken(accessToken).Put(apiPath.String())
+
+	return
+}
+
 func retrieveAccessToken() (accessToken string, err error) {
 	apiPath, _ := url.Parse(os.Getenv("API_BASE"))
 	apiPath.Path = path.Join(apiPath.Path, "/consumers/auth/login")

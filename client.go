@@ -160,6 +160,8 @@ type ClientInterface interface {
 
 	CreateACheckoutSession(ctx context.Context, body CreateACheckoutSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	CreateACheckoutSessionForAToken(ctx context.Context, body CreateACheckoutSessionForATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	RetrieveACheckoutSession(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// Coupon
@@ -177,6 +179,10 @@ type ClientInterface interface {
 
 	// Order
 	ListAllOrders(ctx context.Context, params *ListAllOrdersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateAnOrderUsingATokenWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateAnOrderUsingAToken(ctx context.Context, body CreateAnOrderUsingATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	RetrieveAnOrder(ctx context.Context, orderId string, params *RetrieveAnOrderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -244,7 +250,11 @@ type ClientWithResponsesInterface interface {
 
 	CreateACheckoutSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
 
+	CreateACheckoutSessionForATokenWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
+
 	CreateACheckoutSessionWithResponse(ctx context.Context, body CreateACheckoutSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
+
+	CreateACheckoutSessionForATokenWithResponse(ctx context.Context, body CreateACheckoutSessionForATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
 
 	RetrieveACheckoutSessionWithResponse(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*RetrieveACheckoutSessionResponse, error)
 
@@ -263,6 +273,10 @@ type ClientWithResponsesInterface interface {
 
 	// Order
 	ListAllOrdersWithResponse(ctx context.Context, params *ListAllOrdersParams, reqEditors ...RequestEditorFn) (*ListAllOrdersResponse, error)
+
+	CreateAnOrderUsingATokenWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAnOrderUsingATokenResponse, error)
+
+	CreateAnOrderUsingATokenWithResponse(ctx context.Context, body CreateAnOrderUsingATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAnOrderUsingATokenResponse, error)
 
 	RetrieveAnOrderWithResponse(ctx context.Context, orderId string, params *RetrieveAnOrderParams, reqEditors ...RequestEditorFn) (*RetrieveAnOrderResponse, error)
 
