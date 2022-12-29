@@ -507,6 +507,66 @@ func (c *Client) DeleteAWebhookEndpoint(ctx context.Context, webhookEndpointId s
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListAllTokens(ctx context.Context, params *ListAllTokensParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAllTokensRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveATokenRequest(c.Server, tokenId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EnableAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnableATokenRequest(c.Server, tokenId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DisableAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisableATokenRequest(c.Server, tokenId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteATokenRequest(c.Server, tokenId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // NewListAllCheckoutSessionsRequest generates requests for ListAllCheckoutSessions
 func NewListAllCheckoutSessionsRequest(server string, params *ListAllCheckoutSessionsParams) (*http.Request, error) {
 	var err error
@@ -1892,7 +1952,7 @@ func NewUpdateAWebhookEndpointRequestWithBody(server string, webhookEndpointId s
 	return req, nil
 }
 
-// NewDeleteAWebhookEndpointRequest generates requests for RetrieveAWebhookEndpoint
+// NewDeleteAWebhookEndpointRequest generates requests for DeleteAWebhookEndpoint
 func NewDeleteAWebhookEndpointRequest(server string, webhookEndpointId string) (*http.Request, error) {
 	var err error
 
@@ -1919,6 +1979,205 @@ func NewDeleteAWebhookEndpointRequest(server string, webhookEndpointId string) (
 	}
 
 	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListAllTokensRequest generates requests for ListAllTokens
+func NewListAllTokensRequest(server string, params *ListAllTokensParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tokens")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.MaxResults != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "maxResults", runtime.ParamLocationQuery, *params.MaxResults); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.PageToken != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageToken", runtime.ParamLocationQuery, *params.PageToken); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRetrieveATokenRequest generates requests for RetrieveAToken
+func NewRetrieveATokenRequest(server string, tokenId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "tokenId", runtime.ParamLocationPath, tokenId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tokens/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteATokenRequest generates requests for DeleteAToken
+func NewDeleteATokenRequest(server string, tokenId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "tokenId", runtime.ParamLocationPath, tokenId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tokens/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEnableATokenRequest generates requests for EnableAToken
+func NewEnableATokenRequest(server string, tokenId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "tokenId", runtime.ParamLocationPath, tokenId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tokens/%s/enable", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDisableATokenRequest generates requests for DisableAToken
+func NewDisableATokenRequest(server string, tokenId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "tokenId", runtime.ParamLocationPath, tokenId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tokens/%s/disable", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2935,6 +3194,179 @@ func (r DeleteAWebhookEndpointResponse) StatusCode() int {
 	return 0
 }
 
+type ListAllTokensResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data *[]Token `json:"data,omitempty"`
+
+		// The maximum number of objects returned for this call. Equals to the maxResults query parameter specified (or 20 if not specified).
+		MaxResults *MaxResults `json:"maxResults,omitempty"`
+
+		// The token for the next page of the collection of objects.
+		NextPageToken *NextPageToken `json:"nextPageToken,omitempty"`
+
+		// A string representing the object’s type. The value is always `collection` for collection objects.
+		Object *CollectionObject `json:"object,omitempty"`
+
+		// The token for the page of the collection of objects.
+		PageToken *PageToken `json:"pageToken,omitempty"`
+
+		// The actual number of objects returned for this call. This value is less than or equal to maxResults.
+		Results *Results `json:"results,omitempty"`
+	}
+	JSON401 *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r ListAllTokensResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListAllTokensResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveATokenResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Token
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{} `json:"details"`
+		ErrorCode  string        `json:"errorCode"`
+		Message    string        `json:"message"`
+		StatusCode float32       `json:"statusCode"`
+	}
+}
+
+type EnableATokenResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{} `json:"details"`
+		ErrorCode  string        `json:"errorCode"`
+		Message    string        `json:"message"`
+		StatusCode float32       `json:"statusCode"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r EnableATokenResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EnableATokenResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DisableATokenResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{} `json:"details"`
+		ErrorCode  string        `json:"errorCode"`
+		Message    string        `json:"message"`
+		StatusCode float32       `json:"statusCode"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DisableATokenResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DisableATokenResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteATokenResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *struct {
+		Realm      *string `json:"realm,omitempty"`
+		Scheme     *string `json:"scheme,omitempty"`
+		StatusCode *int    `json:"statusCode,omitempty"`
+	}
+	JSON404 *struct {
+		Details    []interface{} `json:"details"`
+		ErrorCode  string        `json:"errorCode"`
+		Message    string        `json:"message"`
+		StatusCode float32       `json:"statusCode"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteATokenResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteATokenResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveATokenResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveATokenResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // ListAllCheckoutSessionsWithResponse request returning *ListAllCheckoutSessionsResponse
 func (c *ClientWithResponses) ListAllCheckoutSessionsWithResponse(ctx context.Context, params *ListAllCheckoutSessionsParams, reqEditors ...RequestEditorFn) (*ListAllCheckoutSessionsResponse, error) {
 	rsp, err := c.ListAllCheckoutSessions(ctx, params, reqEditors...)
@@ -3302,6 +3734,51 @@ func (c *ClientWithResponses) DeleteAWebhookEndpointWithResponse(ctx context.Con
 		return nil, err
 	}
 	return ParseDeleteAWebhookEndpointResponse(rsp)
+}
+
+// ListAllTokensWithResponse request returning *ListAllTokensResponse
+func (c *ClientWithResponses) ListAllTokensWithResponse(ctx context.Context, params *ListAllTokensParams, reqEditors ...RequestEditorFn) (*ListAllTokensResponse, error) {
+	rsp, err := c.ListAllTokens(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListAllTokensResponse(rsp)
+}
+
+// RetrieveATokenWithResponse request returning *RetrieveATokenResponse
+func (c *ClientWithResponses) RetrieveATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*RetrieveATokenResponse, error) {
+	rsp, err := c.RetrieveAToken(ctx, tokenId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveATokenResponse(rsp)
+}
+
+// EnableATokenWithResponse request returning *EnableATokenResponse
+func (c *ClientWithResponses) EnableATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*EnableATokenResponse, error) {
+	rsp, err := c.EnableAToken(ctx, tokenId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEnableATokenResponse(rsp)
+}
+
+// DisableATokenWithResponse request returning *DisableATokenResponse
+func (c *ClientWithResponses) DisableATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*DisableATokenResponse, error) {
+	rsp, err := c.EnableAToken(ctx, tokenId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisableATokenResponse(rsp)
+}
+
+// DeleteATokenWithResponse request returning *DeleteATokenResponse
+func (c *ClientWithResponses) DeleteATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*DeleteATokenResponse, error) {
+	rsp, err := c.DeleteAToken(ctx, tokenId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteATokenResponse(rsp)
 }
 
 // ParseListAllCheckoutSessionsResponse parses an HTTP response from a ListAllCheckoutSessionsWithResponse call
@@ -4694,6 +5171,235 @@ func ParseDeleteAWebhookEndpointResponse(rsp *http.Response) (*DeleteAWebhookEnd
 	}
 
 	response := &DeleteAWebhookEndpointResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{} `json:"details"`
+			ErrorCode  string        `json:"errorCode"`
+			Message    string        `json:"message"`
+			StatusCode float32       `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListAllTokensResponse parses an HTTP response from a ListAllTokensWithResponse call
+func ParseListAllTokensResponse(rsp *http.Response) (*ListAllTokensResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListAllTokensResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data *[]Token `json:"data,omitempty"`
+
+			// The maximum number of objects returned for this call. Equals to the maxResults query parameter specified (or 20 if not specified).
+			MaxResults *MaxResults `json:"maxResults,omitempty"`
+
+			// The token for the next page of the collection of objects.
+			NextPageToken *NextPageToken `json:"nextPageToken,omitempty"`
+
+			// A string representing the object’s type. The value is always `collection` for collection objects.
+			Object *CollectionObject `json:"object,omitempty"`
+
+			// The token for the page of the collection of objects.
+			PageToken *PageToken `json:"pageToken,omitempty"`
+
+			// The actual number of objects returned for this call. This value is less than or equal to maxResults.
+			Results *Results `json:"results,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveATokenResponse parses an HTTP response from a RetrieveATokenWithResponse call
+func ParseRetrieveATokenResponse(rsp *http.Response) (*RetrieveATokenResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveATokenResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Token
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{} `json:"details"`
+			ErrorCode  string        `json:"errorCode"`
+			Message    string        `json:"message"`
+			StatusCode float32       `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEnableATokenResponse parses an HTTP response from a EnableATokenWithResponse call
+func ParseEnableATokenResponse(rsp *http.Response) (*EnableATokenResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EnableATokenResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{} `json:"details"`
+			ErrorCode  string        `json:"errorCode"`
+			Message    string        `json:"message"`
+			StatusCode float32       `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDisableATokenResponse parses an HTTP response from a DisableATokenWithResponse call
+func ParseDisableATokenResponse(rsp *http.Response) (*DisableATokenResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DisableATokenResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Realm      *string `json:"realm,omitempty"`
+			Scheme     *string `json:"scheme,omitempty"`
+			StatusCode *int    `json:"statusCode,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Details    []interface{} `json:"details"`
+			ErrorCode  string        `json:"errorCode"`
+			Message    string        `json:"message"`
+			StatusCode float32       `json:"statusCode"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteATokenResponse parses an HTTP response from a DeleteATokenWithResponse call
+func ParseDeleteATokenResponse(rsp *http.Response) (*DeleteATokenResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteATokenResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

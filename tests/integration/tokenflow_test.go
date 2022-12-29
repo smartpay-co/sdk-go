@@ -50,25 +50,46 @@ func (suite *IntegrationTestSuite) TestCreateACheckoutSessionForAToken() {
 		suite.NotNil(result.JSON200.Id)
 		suite.NotNil(result.JSON200.TokenId)
 		suite.EqualValues(string(*result.JSON200.TokenId), tokenId)
+
+		suite.Run("TestRetrieveAToken", func() {
+			result, err := suite.client.RetrieveATokenWithResponse(suite.ctx, tokenId)
+			suite.Nil(err)
+			suite.NotNil(result.Body)
+			suite.NotNil(result.JSON200)
+			token, _ := ConvertToStruct[Token](result.JSON200)
+			suite.EqualValues(string(*token.Id), tokenId)
+		})
+
+		suite.Run("TestDisableAToken", func() {
+			result, err := suite.client.DisableATokenWithResponse(suite.ctx, tokenId)
+			suite.Nil(err)
+			suite.NotNil(result.Body)
+			suite.EqualValues(result.StatusCode(), 200)
+		})
+
+		suite.Run("TestEnableAToken", func() {
+			result, err := suite.client.EnableATokenWithResponse(suite.ctx, tokenId)
+			suite.Nil(err)
+			suite.NotNil(result.Body)
+			suite.EqualValues(result.StatusCode(), 200)
+		})
+
+		suite.Run("TestListAllTokens", func() {
+			params := ListAllTokensParams{}
+			result, err := suite.client.ListAllTokensWithResponse(suite.ctx, &params)
+			suite.Nil(err)
+			suite.NotNil(result.Body)
+			suite.NotNil(result.JSON200)
+			obj, _ := ConvertToStruct[Token]((*result.JSON200.Data)[0])
+			suite.NotNil(obj.Id)
+		})
+
+		suite.Run("TestDeleteAToken", func() {
+			result, err := suite.client.DeleteATokenWithResponse(suite.ctx, tokenId)
+			suite.Nil(err)
+			suite.NotNil(result.Body)
+			suite.EqualValues(result.StatusCode(), 204)
+		})
 	})
 
-	suite.Run("TestRetrieveAToken", func() {
-
-	})
-
-	suite.Run("TestDisableAToken", func() {
-
-	})
-
-	suite.Run("TestEnableAToken", func() {
-
-	})
-
-	suite.Run("TestListAllTokens", func() {
-
-	})
-
-	suite.Run("TestDeleteAToken", func() {
-
-	})
 }

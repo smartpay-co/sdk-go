@@ -1488,3 +1488,12 @@ type CreateAWebhookEndpointJSONRequestBody WebhookEndpointCreate
 
 // UpdateAWebhookEndpointJSONRequestBody defines body for UpdateAWebhookEndpoint for application/json ContentType.
 type UpdateAWebhookEndpointJSONRequestBody WebhookEndpointUpdate
+
+// ListAllTokensParams defines parameters for ListAllTokens.
+type ListAllTokensParams struct {
+	// Number of objects to return. Defaults to 20 if not set.
+	MaxResults *MaxResults `json:"maxResults,omitempty"`
+
+	// The token for the page of the collection of objects.
+	PageToken *PageToken `json:"pageToken,omitempty"`
+}

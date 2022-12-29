@@ -241,6 +241,17 @@ type ClientInterface interface {
 	UpdateAWebhookEndpoint(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	DeleteAWebhookEndpoint(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Token
+	ListAllTokens(ctx context.Context, params *ListAllTokensParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RetrieveAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EnableAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DisableAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 // ClientWithResponsesInterface is the interface specification for the client with responses.
@@ -335,4 +346,15 @@ type ClientWithResponsesInterface interface {
 	UpdateAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error)
 
 	DeleteAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*DeleteAWebhookEndpointResponse, error)
+
+	// Token
+	ListAllTokensWithResponse(ctx context.Context, params *ListAllTokensParams, reqEditors ...RequestEditorFn) (*ListAllTokensResponse, error)
+
+	RetrieveATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*RetrieveATokenResponse, error)
+
+	EnableATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*EnableATokenResponse, error)
+
+	DisableATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*DisableATokenResponse, error)
+
+	DeleteATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*DeleteATokenResponse, error)
 }
