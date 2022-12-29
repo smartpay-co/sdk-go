@@ -859,35 +859,35 @@ type UpdatedAt int
 // WebhookEndpoint defines model for webhookEndpoint.
 type WebhookEndpoint struct {
 	// Has the value `true` if the webhook endpoint is active and events are sent to the url specified. Has the value `false if the endpoint is inactive and the events won't be sent to the url specified.
-	Active bool `json:"active"`
+	Active *bool `json:"active"`
 
 	// Time at which the object was created. Measured in milliseconds since the Unix epoch.
-	CreatedAt CreatedAt `json:"createdAt"`
+	CreatedAt *CreatedAt `json:"createdAt"`
 
 	// An optional description for your webhook endpoint.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 
 	// The list of events to subscribe to. If not specified you will be subsribed to all events.
 	EventSubscriptions *[]EventSubscription `json:"eventSubscriptions,omitempty"`
 
 	// The unique identifier for the Webhook Endpoint object.
-	Id WebhookEndpointId `json:"id"`
+	Id *WebhookEndpointId `json:"id"`
 
 	// Set of up to 20 key-value pairs that you can attach to the object.
 	Metadata *Metadata `json:"metadata,omitempty"`
 
 	// A string representing the object’s type. The value is always `webhookEndpoint` for Webhook Endpoint objects.
-	Object        string `json:"object"`
-	SigningSecret string `json:"signingSecret"`
+	Object        *string `json:"object"`
+	SigningSecret *string `json:"signingSecret"`
 
 	// A flag with a value `false` if the object exists in live mode or `true` if the object exists in test mode.
-	Test TestFlag `json:"test"`
+	Test *TestFlag `json:"test"`
 
 	// The moment at which the object was last updated. Measured in milliseconds since the Unix epoch.
-	UpdatedAt UpdatedAt `json:"updatedAt"`
+	UpdatedAt *UpdatedAt `json:"updatedAt"`
 
 	// The url which will be called when any of the events you subscribed to occur.
-	Url string `json:"url"`
+	Url *string `json:"url"`
 }
 
 // The unique identifier for the Webhook Endpoint object.

@@ -19,14 +19,16 @@ func (suite *IntegrationTestSuite) TestCreateAWebhookEndpoint() {
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
 	suite.NotNil(result.JSON200.Id)
-	webhookEndpointId := string((*result.JSON200).Id)
+	obj, _ := ConvertToStruct[WebhookEndpoint](result.JSON200)
+	webhookEndpointId := string(*obj.Id)
 
 	suite.Run("TestRetrieveAWebhookEndpoint", func() {
 		result, err := suite.client.RetrieveAWebhookEndpointWithResponse(suite.ctx, webhookEndpointId)
 		suite.Nil(err)
 		suite.NotNil(result.Body)
 		suite.NotNil(result.JSON200)
-		suite.EqualValues(string((*result.JSON200).Id), webhookEndpointId)
+		obj, _ := ConvertToStruct[WebhookEndpoint](result.JSON200)
+		suite.EqualValues(string(*obj.Id), webhookEndpointId)
 	})
 
 	suite.Run("TestUpdateAWebhookEndpoint", func() {
@@ -40,7 +42,8 @@ func (suite *IntegrationTestSuite) TestCreateAWebhookEndpoint() {
 		suite.Nil(err)
 		suite.NotNil(result.Body)
 		suite.NotNil(result.JSON200)
-		suite.EqualValues(string((*result.JSON200).Id), webhookEndpointId)
+		obj, _ := ConvertToStruct[WebhookEndpoint](result.JSON200)
+		suite.EqualValues(string(*obj.Id), webhookEndpointId)
 	})
 
 	suite.Run("TestListAllWebhookEndpoints", func() {
