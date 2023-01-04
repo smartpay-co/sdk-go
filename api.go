@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -576,7 +575,7 @@ func NewListAllCheckoutSessionsRequest(server string, params *ListAllCheckoutSes
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/checkout-sessions")
+	operationPath := "/v1/checkout-sessions"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -679,7 +678,7 @@ func NewCreateACheckoutSessionRequestWithBody(server string, contentType string,
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/checkout-sessions")
+	operationPath := "/v1/checkout-sessions"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -762,7 +761,7 @@ func NewListAllCouponsRequest(server string, params *ListAllCouponsParams) (*htt
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/coupons")
+	operationPath := "/v1/coupons"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -835,7 +834,7 @@ func NewCreateACouponRequestWithBody(server string, contentType string, body io.
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/coupons")
+	operationPath := "/v1/coupons"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -945,7 +944,7 @@ func NewListAllOrdersRequest(server string, params *ListAllOrdersParams) (*http.
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/orders")
+	operationPath := "/v1/orders"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1036,7 +1035,7 @@ func NewCreateAnOrderUsingATokenRequestWithBody(server string, contentType strin
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/orders")
+	operationPath := "/v1/orders"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1200,7 +1199,7 @@ func NewListAllPaymentsRequest(server string, params *ListAllPaymentsParams) (*h
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/payments")
+	operationPath := "/v1/payments"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1344,7 +1343,7 @@ func NewCreateAPaymentRequestWithBody(server string, contentType string, body io
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/payments")
+	operationPath := "/v1/payments"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1373,7 +1372,7 @@ func NewListAllPromotionCodesRequest(server string, params *ListAllPromotionCode
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/promotion-codes")
+	operationPath := "/v1/promotion-codes"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1447,7 +1446,7 @@ func NewCreateAPromotionCodeRequestWithBody(server string, contentType string, b
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/promotion-codes")
+	operationPath := "/v1/promotion-codes"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1557,7 +1556,7 @@ func NewListAllRefundsRequest(server string, params *ListAllRefundsParams) (*htt
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/refunds")
+	operationPath := "/v1/refunds"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1647,7 +1646,7 @@ func NewCreateARefundRequestWithBody(server string, contentType string, body io.
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/refunds")
+	operationPath := "/v1/refunds"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1777,7 +1776,7 @@ func NewListAllWebhookEndpointsRequest(server string, params *ListAllWebhookEndp
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/webhook-endpoints")
+	operationPath := "/v1/webhook-endpoints"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1851,7 +1850,7 @@ func NewCreateAWebhookEndpointRequestWithBody(server string, contentType string,
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/webhook-endpoints")
+	operationPath := "/v1/webhook-endpoints"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1995,7 +1994,7 @@ func NewListAllTokensRequest(server string, params *ListAllTokensParams) (*http.
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/v1/tokens")
+	operationPath := "/v1/tokens"
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -3783,7 +3782,7 @@ func (c *ClientWithResponses) DeleteATokenWithResponse(ctx context.Context, toke
 
 // ParseListAllCheckoutSessionsResponse parses an HTTP response from a ListAllCheckoutSessionsWithResponse call
 func ParseListAllCheckoutSessionsResponse(rsp *http.Response) (*ListAllCheckoutSessionsResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -3837,7 +3836,7 @@ func ParseListAllCheckoutSessionsResponse(rsp *http.Response) (*ListAllCheckoutS
 
 // ParseCreateACheckoutSessionResponse parses an HTTP response from a CreateACheckoutSessionWithResponse call
 func ParseCreateACheckoutSessionResponse(rsp *http.Response) (*CreateACheckoutSessionResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
@@ -3882,7 +3881,7 @@ func ParseCreateACheckoutSessionResponse(rsp *http.Response) (*CreateACheckoutSe
 
 // ParseRetrieveACheckoutSessionResponse parses an HTTP response from a RetrieveACheckoutSessionWithResponse call
 func ParseRetrieveACheckoutSessionResponse(rsp *http.Response) (*RetrieveACheckoutSessionResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -3931,7 +3930,7 @@ func ParseRetrieveACheckoutSessionResponse(rsp *http.Response) (*RetrieveAChecko
 
 // ParseListAllCouponsResponse parses an HTTP response from a ListAllCouponsWithResponse call
 func ParseListAllCouponsResponse(rsp *http.Response) (*ListAllCouponsResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -3985,7 +3984,7 @@ func ParseListAllCouponsResponse(rsp *http.Response) (*ListAllCouponsResponse, e
 
 // ParseCreateACouponResponse parses an HTTP response from a CreateACouponWithResponse call
 func ParseCreateACouponResponse(rsp *http.Response) (*CreateACouponResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4029,7 +4028,7 @@ func ParseCreateACouponResponse(rsp *http.Response) (*CreateACouponResponse, err
 
 // ParseRetrieveACouponResponse parses an HTTP response from a RetrieveACouponWithResponse call
 func ParseRetrieveACouponResponse(rsp *http.Response) (*RetrieveACouponResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4078,7 +4077,7 @@ func ParseRetrieveACouponResponse(rsp *http.Response) (*RetrieveACouponResponse,
 
 // ParseUpdateACouponResponse parses an HTTP response from a UpdateACouponWithResponse call
 func ParseUpdateACouponResponse(rsp *http.Response) (*UpdateACouponResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4127,7 +4126,7 @@ func ParseUpdateACouponResponse(rsp *http.Response) (*UpdateACouponResponse, err
 
 // ParseListAllOrdersResponse parses an HTTP response from a ListAllOrdersWithResponse call
 func ParseListAllOrdersResponse(rsp *http.Response) (*ListAllOrdersResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4181,7 +4180,7 @@ func ParseListAllOrdersResponse(rsp *http.Response) (*ListAllOrdersResponse, err
 
 // ParseCreateAnOrderUsingATokenResponse parses an HTTP response from a CreateAnOrderUsingATokenWithResponse call
 func ParseCreateAnOrderUsingATokenResponse(rsp *http.Response) (*CreateAnOrderUsingATokenResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
@@ -4237,7 +4236,7 @@ func ParseCreateAnOrderUsingATokenResponse(rsp *http.Response) (*CreateAnOrderUs
 
 // ParseRetrieveAnOrderResponse parses an HTTP response from a RetrieveAnOrderWithResponse call
 func ParseRetrieveAnOrderResponse(rsp *http.Response) (*RetrieveAnOrderResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4286,7 +4285,7 @@ func ParseRetrieveAnOrderResponse(rsp *http.Response) (*RetrieveAnOrderResponse,
 
 // ParseCancelAnOrderResponse parses an HTTP response from a CancelAnOrderWithResponse call
 func ParseCancelAnOrderResponse(rsp *http.Response) (*CancelAnOrderResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4347,7 +4346,7 @@ func ParseCancelAnOrderResponse(rsp *http.Response) (*CancelAnOrderResponse, err
 
 // ParseUpdateAPaymentResponse parses an HTTP response from a UpdateAPaymentWithResponse call
 func ParseUpdateAPaymentResponse(rsp *http.Response) (*UpdateAPaymentResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4396,7 +4395,7 @@ func ParseUpdateAPaymentResponse(rsp *http.Response) (*UpdateAPaymentResponse, e
 
 // ParseListAllPaymentsResponse parses an HTTP response from a ListAllPaymentsWithResponse call
 func ParseListAllPaymentsResponse(rsp *http.Response) (*ListAllPaymentsResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4450,7 +4449,7 @@ func ParseListAllPaymentsResponse(rsp *http.Response) (*ListAllPaymentsResponse,
 
 // ParseRetrieveAPaymentResponse parses an HTTP response from a RetrieveAPaymentWithResponse call
 func ParseRetrieveAPaymentResponse(rsp *http.Response) (*RetrieveAPaymentResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4499,7 +4498,7 @@ func ParseRetrieveAPaymentResponse(rsp *http.Response) (*RetrieveAPaymentRespons
 
 // ParseCreateAPaymentResponse parses an HTTP response from a CreateAPaymentWithResponse call
 func ParseCreateAPaymentResponse(rsp *http.Response) (*CreateAPaymentResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4560,7 +4559,7 @@ func ParseCreateAPaymentResponse(rsp *http.Response) (*CreateAPaymentResponse, e
 
 // ParseListAllPromotionCodesResponse parses an HTTP response from a ListAllPromotionCodesWithResponse call
 func ParseListAllPromotionCodesResponse(rsp *http.Response) (*ListAllPromotionCodesResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4614,7 +4613,7 @@ func ParseListAllPromotionCodesResponse(rsp *http.Response) (*ListAllPromotionCo
 
 // ParseCreateAPromotionCodeResponse parses an HTTP response from a CreateAPromotionCodeWithResponse call
 func ParseCreateAPromotionCodeResponse(rsp *http.Response) (*CreateAPromotionCodeResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4675,7 +4674,7 @@ func ParseCreateAPromotionCodeResponse(rsp *http.Response) (*CreateAPromotionCod
 
 // ParseRetrieveAPromotionCodeResponse parses an HTTP response from a RetrieveAPromotionCodeWithResponse call
 func ParseRetrieveAPromotionCodeResponse(rsp *http.Response) (*RetrieveAPromotionCodeResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4724,7 +4723,7 @@ func ParseRetrieveAPromotionCodeResponse(rsp *http.Response) (*RetrieveAPromotio
 
 // ParseUpdateAPromotionCodeResponse parses an HTTP response from a UpdateAPromotionCodeWithResponse call
 func ParseUpdateAPromotionCodeResponse(rsp *http.Response) (*UpdateAPromotionCodeResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4773,7 +4772,7 @@ func ParseUpdateAPromotionCodeResponse(rsp *http.Response) (*UpdateAPromotionCod
 
 // ParseListAllRefundsResponse parses an HTTP response from a ListAllRefundsWithResponse call
 func ParseListAllRefundsResponse(rsp *http.Response) (*ListAllRefundsResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4827,7 +4826,7 @@ func ParseListAllRefundsResponse(rsp *http.Response) (*ListAllRefundsResponse, e
 
 // ParseCreateARefundResponse parses an HTTP response from a CreateARefundWithResponse call
 func ParseCreateARefundResponse(rsp *http.Response) (*CreateARefundResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4888,7 +4887,7 @@ func ParseCreateARefundResponse(rsp *http.Response) (*CreateARefundResponse, err
 
 // ParseRetrieveARefundResponse parses an HTTP response from a RetrieveARefundWithResponse call
 func ParseRetrieveARefundResponse(rsp *http.Response) (*RetrieveARefundResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4937,7 +4936,7 @@ func ParseRetrieveARefundResponse(rsp *http.Response) (*RetrieveARefundResponse,
 
 // ParseUpdateARefundResponse parses an HTTP response from a UpdateARefundWithResponse call
 func ParseUpdateARefundResponse(rsp *http.Response) (*UpdateARefundResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -4986,7 +4985,7 @@ func ParseUpdateARefundResponse(rsp *http.Response) (*UpdateARefundResponse, err
 
 // ParseListAllWebhookEndpointsResponse parses an HTTP response from a ListAllWebhookEndpointsWithResponse call
 func ParseListAllWebhookEndpointsResponse(rsp *http.Response) (*ListAllWebhookEndpointsResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5040,7 +5039,7 @@ func ParseListAllWebhookEndpointsResponse(rsp *http.Response) (*ListAllWebhookEn
 
 // ParseCreateAWebhookEndpointResponse parses an HTTP response from a CreateAWebhookEndpointWithResponse call
 func ParseCreateAWebhookEndpointResponse(rsp *http.Response) (*CreateAWebhookEndpointResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5077,7 +5076,7 @@ func ParseCreateAWebhookEndpointResponse(rsp *http.Response) (*CreateAWebhookEnd
 
 // ParseRetrieveAWebhookEndpointResponse parses an HTTP response from a RetrieveAWebhookEndpointWithResponse call
 func ParseRetrieveAWebhookEndpointResponse(rsp *http.Response) (*RetrieveAWebhookEndpointResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5126,7 +5125,7 @@ func ParseRetrieveAWebhookEndpointResponse(rsp *http.Response) (*RetrieveAWebhoo
 
 // ParseUpdateAWebhookEndpointResponse parses an HTTP response from a UpdateAWebhookEndpointWithResponse call
 func ParseUpdateAWebhookEndpointResponse(rsp *http.Response) (*UpdateAWebhookEndpointResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5164,7 +5163,7 @@ func ParseUpdateAWebhookEndpointResponse(rsp *http.Response) (*UpdateAWebhookEnd
 
 // ParseDeleteAWebhookEndpointResponse parses an HTTP response from a DeleteAWebhookEndpointWithResponse call
 func ParseDeleteAWebhookEndpointResponse(rsp *http.Response) (*DeleteAWebhookEndpointResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5206,7 +5205,7 @@ func ParseDeleteAWebhookEndpointResponse(rsp *http.Response) (*DeleteAWebhookEnd
 
 // ParseListAllTokensResponse parses an HTTP response from a ListAllTokensWithResponse call
 func ParseListAllTokensResponse(rsp *http.Response) (*ListAllTokensResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5260,7 +5259,7 @@ func ParseListAllTokensResponse(rsp *http.Response) (*ListAllTokensResponse, err
 
 // ParseRetrieveATokenResponse parses an HTTP response from a RetrieveATokenWithResponse call
 func ParseRetrieveATokenResponse(rsp *http.Response) (*RetrieveATokenResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5309,7 +5308,7 @@ func ParseRetrieveATokenResponse(rsp *http.Response) (*RetrieveATokenResponse, e
 
 // ParseEnableATokenResponse parses an HTTP response from a EnableATokenWithResponse call
 func ParseEnableATokenResponse(rsp *http.Response) (*EnableATokenResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5351,7 +5350,7 @@ func ParseEnableATokenResponse(rsp *http.Response) (*EnableATokenResponse, error
 
 // ParseDisableATokenResponse parses an HTTP response from a DisableATokenWithResponse call
 func ParseDisableATokenResponse(rsp *http.Response) (*DisableATokenResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
@@ -5393,7 +5392,7 @@ func ParseDisableATokenResponse(rsp *http.Response) (*DisableATokenResponse, err
 
 // ParseDeleteATokenResponse parses an HTTP response from a DeleteATokenWithResponse call
 func ParseDeleteATokenResponse(rsp *http.Response) (*DeleteATokenResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err

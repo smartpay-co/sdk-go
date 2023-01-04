@@ -3,6 +3,7 @@ name: Test
 jobs:
   test:
     strategy:
+      max-parallel: 1
       matrix:
         go-version: [ '1.18', '1.19']
         os: [ubuntu-latest, macos-latest, windows-latest]

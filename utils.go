@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/eknkc/basex"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -50,9 +50,9 @@ func CalculateWebhookSignatureMiddleware(signingSecret string, next http.Handler
 
 		if signature != "" && signatureTimestamp != "" {
 			// Read body and reassign a new body reader for the next middleware
-			bodyBytes, _ := ioutil.ReadAll(r.Body)
+			bodyBytes, _ := io.ReadAll(r.Body)
 			r.Body.Close()
-			r.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+			r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 			data := signatureTimestamp + "." + string(bodyBytes)
 			sha, err := CalculateSignature(signingSecret, data)
@@ -86,9 +86,5 @@ func CalculateSignature(signingSecret string, data string) (sha string, err erro
 
 func VerifyWebhookSignature(signingSecret string, data string, signature string) bool {
 	sha, _ := CalculateSignature(signingSecret, data)
-	if sha == signature {
-		return true
-	}
-
-	return false
+	return sha == signature
 }
