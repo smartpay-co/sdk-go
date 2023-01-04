@@ -21,3 +21,10 @@ jobs:
     - name: Run staticcheck
       run: staticcheck ./...
     - run: make integration-test
+      env:
+        API_BASE: ${{ secrets.API_BASE }}
+        TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+        SMARTPAY_SECRET_KEY: ${{ secrets.SMARTPAY_SECRET_KEY }}
+        SMARTPAY_PUBLIC_KEY: ${{ secrets.SMARTPAY_PUBLIC_KEY }}
+        SMARTPAY_API_PREFIX: ${{ secrets.SMARTPAY_API_PREFIX }}
