@@ -67,6 +67,9 @@ type CheckoutSession struct {
 	// The unique identifier for the Payment object.
 	Order *OrderId `json:"order,omitempty"`
 
+	// The unique identifier for the Token object.
+	Token *TokenId `json:"token,omitempty"`
+
 	// The URL the customer will be redirected to if the Checkout Session completed successfully. This means the Checkout succeeded, i.e. the customer authorized the order.
 	SuccessUrl *SuccessUrl `json:"successUrl,omitempty"`
 
@@ -100,8 +103,11 @@ type CheckoutSessionExpanded struct {
 	// A string representing the object’s type. The value is always `checkoutSession` for Checkout Session objects.
 	Object *string `json:"object,omitempty"`
 
-	// The unique identifier for the Payment object.
+	// Expanded Order
 	Order *OrderExpanded `json:"order,omitempty"`
+
+	// A Payment token
+	Token *Token `json:"token,omitempty"`
 
 	// The URL the customer will be redirected to if the Checkout Session completed successfully. This means the Checkout succeeded, i.e. the customer authorized the order.
 	SuccessUrl *SuccessUrl `json:"successUrl,omitempty"`
@@ -114,9 +120,6 @@ type CheckoutSessionExpanded struct {
 
 	// The URL to launch Smartpay checkout for this checkout session. Redirect your customer to this URL to complete the purchase.
 	Url *CheckoutSessioUrl `json:"url,omitempty"`
-
-	// A Payment token
-	Token *Token `json:"token,omitempty"`
 }
 
 // The unique identifier for the Checkout Session object.

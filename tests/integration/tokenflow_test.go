@@ -16,6 +16,7 @@ func (suite *IntegrationTestSuite) TestCreateACheckoutSessionForAToken() {
 	suite.NotNil(result.Body)
 	suite.NotNil(result.JSON200)
 	suite.NotNil(result.JSON200.Token.Id)
+	checkoutSessionId := string(*result.JSON200.Id)
 	tokenId := string(*result.JSON200.Token.Id)
 
 	// Authorize the Token
@@ -23,6 +24,33 @@ func (suite *IntegrationTestSuite) TestCreateACheckoutSessionForAToken() {
 	if err != nil {
 		panic(err)
 	}
+
+	suite.Run("TestRetrieveACheckOutSessionForToken", func() {
+		params := RetrieveACheckoutSessionParams{}
+		result, err := suite.client.RetrieveACheckoutSessionWithResponse(suite.ctx, checkoutSessionId, &params)
+
+		suite.Nil(err)
+		suite.NotNil(result.Body)
+		suite.NotNil(result.JSON200)
+
+		checkoutSession, _ := ConvertToStruct[CheckoutSession](result.JSON200)
+		suite.Equal(string(*checkoutSession.Token), tokenId)
+	})
+
+	suite.Run("TestRetrieveACheckOutSessionForTokenExpanded", func() {
+		params := RetrieveACheckoutSessionParams{
+			Expand: Ptr(RetrieveACheckoutSessionParamsExpand(ExpandAll)),
+		}
+		result, err := suite.client.RetrieveACheckoutSessionWithResponse(suite.ctx, checkoutSessionId, &params)
+
+		suite.Nil(err)
+		suite.NotNil(result.Body)
+		suite.NotNil(result.JSON200)
+
+		checkoutSession, _ := ConvertToStruct[CheckoutSessionExpanded](result.JSON200)
+		suite.Equal(*checkoutSession.Token.Object, "token")
+		suite.Equal(string(*checkoutSession.Token.Id), tokenId)
+	})
 
 	suite.Run("TestCreateAnOrderUsingAToken", func() {
 		payload := CreateAnOrderUsingATokenJSONRequestBody{
