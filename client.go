@@ -160,6 +160,8 @@ type ClientInterface interface {
 
 	CreateACheckoutSession(ctx context.Context, body CreateACheckoutSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	CreateACheckoutSessionForAToken(ctx context.Context, body CreateACheckoutSessionForATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	RetrieveACheckoutSession(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// Coupon
@@ -177,6 +179,10 @@ type ClientInterface interface {
 
 	// Order
 	ListAllOrders(ctx context.Context, params *ListAllOrdersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateAnOrderUsingATokenWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateAnOrderUsingAToken(ctx context.Context, body CreateAnOrderUsingATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	RetrieveAnOrder(ctx context.Context, orderId string, params *RetrieveAnOrderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -235,6 +241,17 @@ type ClientInterface interface {
 	UpdateAWebhookEndpoint(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	DeleteAWebhookEndpoint(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Token
+	ListAllTokens(ctx context.Context, params *ListAllTokensParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RetrieveAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EnableAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DisableAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteAToken(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 // ClientWithResponsesInterface is the interface specification for the client with responses.
@@ -244,7 +261,11 @@ type ClientWithResponsesInterface interface {
 
 	CreateACheckoutSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
 
+	CreateACheckoutSessionForATokenWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
+
 	CreateACheckoutSessionWithResponse(ctx context.Context, body CreateACheckoutSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
+
+	CreateACheckoutSessionForATokenWithResponse(ctx context.Context, body CreateACheckoutSessionForATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateACheckoutSessionResponse, error)
 
 	RetrieveACheckoutSessionWithResponse(ctx context.Context, checkoutSessionId string, params *RetrieveACheckoutSessionParams, reqEditors ...RequestEditorFn) (*RetrieveACheckoutSessionResponse, error)
 
@@ -263,6 +284,10 @@ type ClientWithResponsesInterface interface {
 
 	// Order
 	ListAllOrdersWithResponse(ctx context.Context, params *ListAllOrdersParams, reqEditors ...RequestEditorFn) (*ListAllOrdersResponse, error)
+
+	CreateAnOrderUsingATokenWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAnOrderUsingATokenResponse, error)
+
+	CreateAnOrderUsingATokenWithResponse(ctx context.Context, body CreateAnOrderUsingATokenJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAnOrderUsingATokenResponse, error)
 
 	RetrieveAnOrderWithResponse(ctx context.Context, orderId string, params *RetrieveAnOrderParams, reqEditors ...RequestEditorFn) (*RetrieveAnOrderResponse, error)
 
@@ -321,4 +346,15 @@ type ClientWithResponsesInterface interface {
 	UpdateAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, body UpdateAWebhookEndpointJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAWebhookEndpointResponse, error)
 
 	DeleteAWebhookEndpointWithResponse(ctx context.Context, webhookEndpointId string, reqEditors ...RequestEditorFn) (*DeleteAWebhookEndpointResponse, error)
+
+	// Token
+	ListAllTokensWithResponse(ctx context.Context, params *ListAllTokensParams, reqEditors ...RequestEditorFn) (*ListAllTokensResponse, error)
+
+	RetrieveATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*RetrieveATokenResponse, error)
+
+	EnableATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*EnableATokenResponse, error)
+
+	DisableATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*DisableATokenResponse, error)
+
+	DeleteATokenWithResponse(ctx context.Context, tokenId string, reqEditors ...RequestEditorFn) (*DeleteATokenResponse, error)
 }

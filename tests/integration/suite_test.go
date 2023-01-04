@@ -22,7 +22,7 @@ type IntegrationTestSuite struct {
 	testCancelOrderId string
 }
 
-func TestCheckOutTestSuite(t *testing.T) {
+func TestIntegrationTestSuite(t *testing.T) {
 	suite.Run(t, new(IntegrationTestSuite))
 }
 
@@ -97,6 +97,20 @@ func authorizeOrder(orderId string) (err error) {
 	//req.DevMode()
 	httpClient := req.C().SetLogger(nil) //.EnableDumpAllWithoutResponse()
 	_, err = httpClient.R().SetBearerAuthToken(accessToken).SetBody(`{"paymentMethod":"pm_test_visaApproved","paymentPlan":"pay_in_three"}`).Post(apiPath.String())
+
+	return
+}
+
+func authorizeToken(tokenId string) (err error) {
+	apiPath, _ := url.Parse(os.Getenv("API_BASE"))
+	apiPath.Path = path.Join(apiPath.Path, fmt.Sprintf("/tokens/%s/approve", tokenId))
+	accessToken, err := retrieveAccessToken()
+	if err != nil {
+		return
+	}
+	//req.DevMode()
+	httpClient := req.C().SetLogger(nil) //.EnableDumpAllWithoutResponse()
+	_, err = httpClient.R().SetBearerAuthToken(accessToken).Put(apiPath.String())
 
 	return
 }

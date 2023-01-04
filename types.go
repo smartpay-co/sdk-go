@@ -114,6 +114,9 @@ type CheckoutSessionExpanded struct {
 
 	// The URL to launch Smartpay checkout for this checkout session. Redirect your customer to this URL to complete the purchase.
 	Url *CheckoutSessioUrl `json:"url,omitempty"`
+
+	// A Payment token
+	Token *Token `json:"token,omitempty"`
 }
 
 // The unique identifier for the Checkout Session object.
@@ -368,6 +371,8 @@ type MaxResults int
 // Set of up to 20 key-value pairs that you can attach to the object.
 type Metadata map[string]interface{}
 
+type Mode string
+
 // The token for the next page of the collection of objects.
 type NextPageToken string
 
@@ -454,6 +459,9 @@ type OrderExpanded struct {
 
 	// The moment at which the object was last updated. Measured in milliseconds since the Unix epoch.
 	UpdatedAt *UpdatedAt `json:"updatedAt,omitempty"`
+
+	// The unique identifier for the Token object.
+	TokenId *TokenId `json:"tokenId,omitempty"`
 }
 
 // The unique identifier for the Payment object.
@@ -464,6 +472,35 @@ type OrderOptions interface{}
 
 // Order Status
 type OrderStatus string
+
+// CheckoutSessionCreate defines model for checkout-session_create.
+type OrderCreate struct {
+	// The amount intended to be collected through this order. A positive integer in the smallest currency unit.
+	Amount OrderAmount `json:"amount"`
+
+	CaptureMethod *CaptureMethod `json:"captureMethod,omitempty"`
+
+	// Three-letter ISO currency code, in uppercase. Must be a supported currency.
+	Currency Currency `json:"currency"`
+
+	// Customer Information, the details provided here are used to pre-populate forms for your customer's checkout experiences. The more information you send, the better experience the customer will have.
+	CustomerInfo CustomerInfo `json:"customerInfo"`
+
+	// The line items the customer wishes to order.
+	Items []Item `json:"items"`
+
+	// Set of up to 20 key-value pairs that you can attach to the object.
+	Metadata *Metadata `json:"metadata,omitempty"`
+
+	// A - ideally unique - string to reference the Order in your system (e.g. an order ID, etc.).
+	Reference *string `json:"reference,omitempty"`
+
+	// Shipping Information
+	ShippingInfo ShippingInfo `json:"shippingInfo"`
+
+	// The unique identifier for the token to be used when creating this order.
+	Token TokenId `json:"token"`
+}
 
 // The token for the page of the collection of objects.
 type PageToken string
@@ -783,41 +820,74 @@ type SuccessUrl string
 // A flag with a value `false` if the object exists in live mode or `true` if the object exists in test mode.
 type TestFlag bool
 
+// Token
+type Token struct {
+	// The unique identifier for the Token object.
+	Id *TokenId `json:"id,omitempty"`
+
+	// A string representing the object’s type. The value is always `checkoutSession` for Checkout Session objects.
+	Object *string `json:"object,omitempty"`
+
+	// Time at which the object was created. Measured in milliseconds since the Unix epoch.
+	CreatedAt *CreatedAt `json:"createdAt,omitempty"`
+
+	// Set of up to 20 key-value pairs that you can attach to the object.
+	Metadata *Metadata `json:"metadata,omitempty"`
+
+	// A - ideally unique - string to reference the Token in your system (e.g. a token ID, etc.).
+	Reference *string `json:"reference,omitempty"`
+
+	// The current status of the Token object.
+	Status *TokenStatus `json:"status,omitempty"`
+
+	// A flag with a value `false` if the object exists in live mode or `true` if the object exists in test mode.
+	Test *TestFlag `json:"test,omitempty"`
+
+	// The moment at which the object was last updated. Measured in milliseconds since the Unix epoch.
+	UpdatedAt *UpdatedAt `json:"updatedAt,omitempty"`
+}
+
+// The unique identifier for the Token object.
+type TokenId string
+
+// Token Status
+type TokenStatus string
+
 // The moment at which the object was last updated. Measured in milliseconds since the Unix epoch.
 type UpdatedAt int
 
 // WebhookEndpoint defines model for webhookEndpoint.
 type WebhookEndpoint struct {
 	// Has the value `true` if the webhook endpoint is active and events are sent to the url specified. Has the value `false if the endpoint is inactive and the events won't be sent to the url specified.
-	Active bool `json:"active"`
+	Active *bool `json:"active"`
 
 	// Time at which the object was created. Measured in milliseconds since the Unix epoch.
-	CreatedAt CreatedAt `json:"createdAt"`
+	CreatedAt *CreatedAt `json:"createdAt"`
 
 	// An optional description for your webhook endpoint.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 
 	// The list of events to subscribe to. If not specified you will be subsribed to all events.
 	EventSubscriptions *[]EventSubscription `json:"eventSubscriptions,omitempty"`
 
 	// The unique identifier for the Webhook Endpoint object.
-	Id WebhookEndpointId `json:"id"`
+	Id *WebhookEndpointId `json:"id"`
 
 	// Set of up to 20 key-value pairs that you can attach to the object.
 	Metadata *Metadata `json:"metadata,omitempty"`
 
 	// A string representing the object’s type. The value is always `webhookEndpoint` for Webhook Endpoint objects.
-	Object        string `json:"object"`
-	SigningSecret string `json:"signingSecret"`
+	Object        *string `json:"object"`
+	SigningSecret *string `json:"signingSecret"`
 
 	// A flag with a value `false` if the object exists in live mode or `true` if the object exists in test mode.
-	Test TestFlag `json:"test"`
+	Test *TestFlag `json:"test"`
 
 	// The moment at which the object was last updated. Measured in milliseconds since the Unix epoch.
-	UpdatedAt UpdatedAt `json:"updatedAt"`
+	UpdatedAt *UpdatedAt `json:"updatedAt"`
 
 	// The url which will be called when any of the events you subscribed to occur.
-	Url string `json:"url"`
+	Url *string `json:"url"`
 }
 
 // The unique identifier for the Webhook Endpoint object.
@@ -1031,6 +1101,29 @@ type CheckoutSessionCreate struct {
 
 	// Shipping Information
 	ShippingInfo ShippingInfo `json:"shippingInfo"`
+
+	// The URL the customer will be redirected to if the Checkout Session completed successfully. This means the Checkout succeeded, i.e. the customer authorized the order.
+	SuccessUrl SuccessUrl `json:"successUrl"`
+}
+
+// CheckoutSessionForATokenCreate defines model for checkout-session_create.
+type CheckoutSessionForATokenCreate struct {
+	Mode Mode `json:"mode"`
+
+	// The URL the customer will be redirected to if the Checkout Session hasn't completed successfully. This means the Checkout failed, or the customer decided to cancel it.
+	CancelUrl CancelUrl `json:"cancelUrl"`
+
+	// Customer Information, the details provided here are used to pre-populate forms for your customer's checkout experiences. The more information you send, the better experience the customer will have.
+	CustomerInfo CustomerInfo `json:"customerInfo"`
+
+	// Locale
+	Locale *Locale `json:"locale,omitempty"`
+
+	// Set of up to 20 key-value pairs that you can attach to the object.
+	Metadata *Metadata `json:"metadata,omitempty"`
+
+	// A - ideally unique - string to reference the Order in your system (e.g. an order ID, etc.).
+	Reference *string `json:"reference,omitempty"`
 
 	// The URL the customer will be redirected to if the Checkout Session completed successfully. This means the Checkout succeeded, i.e. the customer authorized the order.
 	SuccessUrl SuccessUrl `json:"successUrl"`
@@ -1360,11 +1453,17 @@ type ListAllWebhookEndpointsParams struct {
 // CreateACheckoutSessionJSONRequestBody defines body for CreateACheckoutSession for application/json ContentType.
 type CreateACheckoutSessionJSONRequestBody CheckoutSessionCreate
 
+// CreateACheckoutSessionForATokenJSONRequestBody defines body for CheckoutSessionForATokenCreate for application/json ContentType.
+type CreateACheckoutSessionForATokenJSONRequestBody CheckoutSessionForATokenCreate
+
 // CreateACouponJSONRequestBody defines body for CreateACoupon for application/json ContentType.
 type CreateACouponJSONRequestBody CouponCreate
 
 // UpdateACouponJSONRequestBody defines body for UpdateACoupon for application/json ContentType.
 type UpdateACouponJSONRequestBody CouponUpdate
+
+// CreateAnOrderUsingATokenJSONRequestBody defines body for CreateAnOrderUsingAToken for application/json ContentType.
+type CreateAnOrderUsingATokenJSONRequestBody OrderCreate
 
 // CreateAPaymentJSONRequestBody defines body for CreateAPayment for application/json ContentType.
 type CreateAPaymentJSONRequestBody PaymentCreate
@@ -1389,3 +1488,12 @@ type CreateAWebhookEndpointJSONRequestBody WebhookEndpointCreate
 
 // UpdateAWebhookEndpointJSONRequestBody defines body for UpdateAWebhookEndpoint for application/json ContentType.
 type UpdateAWebhookEndpointJSONRequestBody WebhookEndpointUpdate
+
+// ListAllTokensParams defines parameters for ListAllTokens.
+type ListAllTokensParams struct {
+	// Number of objects to return. Defaults to 20 if not set.
+	MaxResults *MaxResults `json:"maxResults,omitempty"`
+
+	// The token for the page of the collection of objects.
+	PageToken *PageToken `json:"pageToken,omitempty"`
+}
