@@ -9,6 +9,7 @@
 [![Go Reference][reference-shield]][reference-url]
 [![Go Report Card][go-report-card-shield]][go-report-card-url]
 [![Apache 2.0 License][license-shield]][license-url]
+[![Workflow][workflow-shield]][workflow-url]
 
 <br />
 <div align="center">
@@ -128,3 +129,5 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [reference-url]: https://pkg.go.dev/github.com/smartpay-co/sdk-go
 [go-report-card-shield]: https://goreportcard.com/badge/github.com/smartpay-co/sdk-go
 [go-report-card-url]: https://goreportcard.com/report/github.com/smartpay-co/sdk-go
+[workflow-shield]: https://github.com/smartpay-co/sdk-go/actions/workflows/ci.yml/badge.svg
+[workflow-url]: https://github.com/smartpay-co/sdk-go/actions/workflows/ci.yml
