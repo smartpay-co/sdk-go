@@ -42,6 +42,7 @@ func (suite *IntegrationTestSuite) TestCreateACheckOutSession() {
 		suite.NotNil(result.JSON200)
 
 		checkoutSession, _ := ConvertToStruct[CheckoutSessionExpanded](result.JSON200)
+		suite.Equal(*checkoutSession.Order.Object, "order")
 		suite.Equal(string(*checkoutSession.Id), suite.checkoutSessionId)
 	})
 
