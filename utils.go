@@ -7,10 +7,12 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/eknkc/basex"
+	"github.com/google/uuid"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 // Ptr Inline pointer helper
@@ -87,4 +89,20 @@ func CalculateSignature(signingSecret string, data string) (sha string, err erro
 func VerifyWebhookSignature(signingSecret string, data string, signature string) bool {
 	sha, _ := CalculateSignature(signingSecret, data)
 	return sha == signature
+}
+
+func newRequest(method, url string, body io.Reader) (*http.Request, error) {
+	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Add Idempotency-Key for POST, PUT and PATCH requests.
+	// ref: https://en.docs.smartpay.co/reference/idempotency
+	method = strings.ToUpper(method)
+	if method == "POST" || method == "PUT" || method == "PATCH" {
+		req.Header.Set("Idempotency-Key", uuid.New().String())
+	}
+
+	return req, nil
 }
