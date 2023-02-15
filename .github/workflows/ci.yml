@@ -26,7 +26,7 @@ jobs:
       run: go install honnef.co/go/tools/cmd/staticcheck@latest
     - name: Run staticcheck
       run: staticcheck ./...
-    - run: make integration-test
+    - run: make test
       env:
         API_BASE: ${{ secrets.API_BASE }}
         TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
