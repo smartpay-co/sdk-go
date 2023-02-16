@@ -80,6 +80,20 @@ const (
 	EventSubscriptionPromotionCodeUpdated EventSubscription = "promotion_code.updated"
 
 	EventSubscriptionRefundCreated EventSubscription = "refund.created"
+
+	EventSubscriptionTokenApproved EventSubscription = "token.approved"
+
+	EventSubscriptionTokenRejected EventSubscription = "token.rejected"
+
+	EventSubscriptionTokenDeleted EventSubscription = "token.deleted"
+
+	EventSubscriptionTokenDisabled EventSubscription = "token.disabled"
+
+	EventSubscriptionTokenEnabled EventSubscription = "token.enabled"
+
+	EventSubscriptionTokenCreated EventSubscription = "token.created"
+
+	EventSubscriptionTokenUsed EventSubscription = "token.used"
 )
 
 // Defines values for Locale.
