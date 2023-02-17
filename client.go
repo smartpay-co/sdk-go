@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
+	"github.com/hashicorp/go-retryablehttp"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
@@ -21,6 +23,12 @@ type HttpRequestDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
+const (
+	DEFAULT_RETRY_WAIT_MIN = 1 * time.Second
+	DEFAULT_RETRY_WAIT_MAX = 5 * time.Second
+	DEFAULT_RETRY_MAX      = 3
+)
+
 // Client which conforms to the OpenAPI3 specification for this service.
 type Client struct {
 	// SmartPay API endpoint
@@ -31,6 +39,11 @@ type Client struct {
 
 	// Public key
 	publicKey string
+
+	// Retry policies
+	retryMax     int           // Maximum number of retries
+	retryWaitMin time.Duration // Minimum time to wait
+	retryWaitMax time.Duration // Maximum time to wait
 
 	// Doer for performing requests, typically a *http.Client with any
 	// customized settings, such as certificate chains.
@@ -48,9 +61,12 @@ type ClientOption func(*Client) error
 func NewClient(secretKey string, publicKey string, opts ...ClientOption) (*Client, error) {
 	// create a client with sane default values
 	client := Client{
-		Server:    ApiEndpoint,
-		secretKey: secretKey,
-		publicKey: publicKey,
+		Server:       ApiEndpoint,
+		secretKey:    secretKey,
+		publicKey:    publicKey,
+		retryMax:     DEFAULT_RETRY_MAX,
+		retryWaitMin: DEFAULT_RETRY_WAIT_MIN,
+		retryWaitMax: DEFAULT_RETRY_WAIT_MAX,
 	}
 	// read envvar for ApiEndpoint
 	envApiEndpoint := os.Getenv("SMARTPAY_API_PREFIX")
@@ -70,7 +86,12 @@ func NewClient(secretKey string, publicKey string, opts ...ClientOption) (*Clien
 	}
 	// create httpClient, if not already present
 	if client.Client == nil {
-		client.Client = &http.Client{}
+		retryableClient := retryablehttp.NewClient()
+		retryableClient.RetryMax = client.retryMax
+		retryableClient.RetryWaitMin = client.retryWaitMin
+		retryableClient.RetryWaitMax = client.retryWaitMax
+		retryableClient.Logger = nil
+		client.Client = retryableClient.StandardClient()
 	}
 
 	// Inject dev-lang & sdk-version
@@ -106,6 +127,17 @@ func WithHTTPClient(doer HttpRequestDoer) ClientOption {
 func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 	return func(c *Client) error {
 		c.RequestEditors = append(c.RequestEditors, fn)
+		return nil
+	}
+}
+
+// WithRetryOptions allows setting up retry policies for the default http client.
+// If WithHTTPClient is invoked, this function changes nothing.
+func WithRetryOptions(retryMax int, retryWaitMin time.Duration, retryWaitMax time.Duration) ClientOption {
+	return func(c *Client) error {
+		c.retryMax = retryMax
+		c.retryWaitMin = retryWaitMin
+		c.retryWaitMax = retryWaitMax
 		return nil
 	}
 }

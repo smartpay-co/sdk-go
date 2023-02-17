@@ -637,7 +637,7 @@ func NewListAllCheckoutSessionsRequest(server string, params *ListAllCheckoutSes
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -688,7 +688,7 @@ func NewCreateACheckoutSessionRequestWithBody(server string, contentType string,
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	req, err := newRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -744,7 +744,7 @@ func NewRetrieveACheckoutSessionRequest(server string, checkoutSessionId string,
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -806,7 +806,7 @@ func NewListAllCouponsRequest(server string, params *ListAllCouponsParams) (*htt
 	}
 
 	queryURL.RawQuery = queryValues.Encode()
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -844,7 +844,7 @@ func NewCreateACouponRequestWithBody(server string, contentType string, body io.
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	req, err := newRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -880,7 +880,7 @@ func NewRetrieveACouponRequest(server string, couponId string) (*http.Request, e
 		return nil, err
 	}
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -925,7 +925,7 @@ func NewUpdateACouponRequestWithBody(server string, couponId string, contentType
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	req, err := newRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1006,7 +1006,7 @@ func NewListAllOrdersRequest(server string, params *ListAllOrdersParams) (*http.
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1045,7 +1045,7 @@ func NewCreateAnOrderUsingATokenRequestWithBody(server string, contentType strin
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	req, err := newRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1101,7 +1101,7 @@ func NewRetrieveAnOrderRequest(server string, orderId string, params *RetrieveAn
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1135,7 +1135,7 @@ func NewCancelAnOrderRequest(server string, orderId string) (*http.Request, erro
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := newRequest("PUT", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1180,7 +1180,7 @@ func NewUpdateAPaymentRequestWithBody(server string, paymentId string, contentTy
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	req, err := newRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1261,7 +1261,7 @@ func NewListAllPaymentsRequest(server string, params *ListAllPaymentsParams) (*h
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1315,7 +1315,7 @@ func NewRetrieveAPaymentRequest(server string, paymentId string, params *Retriev
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1353,7 +1353,7 @@ func NewCreateAPaymentRequestWithBody(server string, contentType string, body io
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	req, err := newRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1418,7 +1418,7 @@ func NewListAllPromotionCodesRequest(server string, params *ListAllPromotionCode
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1456,7 +1456,7 @@ func NewCreateAPromotionCodeRequestWithBody(server string, contentType string, b
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	req, err := newRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1492,7 +1492,7 @@ func NewRetrieveAPromotionCodeRequest(server string, promotionCodeId string) (*h
 		return nil, err
 	}
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1537,7 +1537,7 @@ func NewUpdateAPromotionCodeRequestWithBody(server string, promotionCodeId strin
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	req, err := newRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1618,7 +1618,7 @@ func NewListAllRefundsRequest(server string, params *ListAllRefundsParams) (*htt
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1656,7 +1656,7 @@ func NewCreateARefundRequestWithBody(server string, contentType string, body io.
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	req, err := newRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1712,7 +1712,7 @@ func NewRetrieveARefundRequest(server string, refundId string, params *RetrieveA
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1757,7 +1757,7 @@ func NewUpdateARefundRequestWithBody(server string, refundId string, contentType
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	req, err := newRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1822,7 +1822,7 @@ func NewListAllWebhookEndpointsRequest(server string, params *ListAllWebhookEndp
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1860,7 +1860,7 @@ func NewCreateAWebhookEndpointRequestWithBody(server string, contentType string,
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	req, err := newRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1896,7 +1896,7 @@ func NewRetrieveAWebhookEndpointRequest(server string, webhookEndpointId string)
 		return nil, err
 	}
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1941,7 +1941,7 @@ func NewUpdateAWebhookEndpointRequestWithBody(server string, webhookEndpointId s
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	req, err := newRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -1977,7 +1977,7 @@ func NewDeleteAWebhookEndpointRequest(server string, webhookEndpointId string) (
 		return nil, err
 	}
 
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	req, err := newRequest("DELETE", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2040,7 +2040,7 @@ func NewListAllTokensRequest(server string, params *ListAllTokensParams) (*http.
 
 	queryURL.RawQuery = queryValues.Encode()
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2074,7 +2074,7 @@ func NewRetrieveATokenRequest(server string, tokenId string) (*http.Request, err
 		return nil, err
 	}
 
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	req, err := newRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2108,7 +2108,7 @@ func NewDeleteATokenRequest(server string, tokenId string) (*http.Request, error
 		return nil, err
 	}
 
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	req, err := newRequest("DELETE", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2142,7 +2142,7 @@ func NewEnableATokenRequest(server string, tokenId string) (*http.Request, error
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := newRequest("PUT", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2176,7 +2176,7 @@ func NewDisableATokenRequest(server string, tokenId string) (*http.Request, erro
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	req, err := newRequest("PUT", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
