@@ -95,8 +95,8 @@ func authorizeOrder(orderId string) (err error) {
 		return
 	}
 	//req.DevMode()
-	httpClient := req.C().SetLogger(nil) //.EnableDumpAllWithoutResponse()
-	_, err = httpClient.R().SetBearerAuthToken(accessToken).SetBody(`{"paymentMethod":"pm_test_visaApproved","paymentPlan":"pay_in_three"}`).Post(apiPath.String())
+	httpClient := req.C().SetLogger(nil) //.EnableDumpAll()
+	_, err = httpClient.R().SetHeader("Accept", "application/json").SetBearerAuthToken(accessToken).SetBody(`{"paymentMethod":"pm_test_visaApproved","paymentPlan":"pay_in_three"}`).Post(apiPath.String())
 
 	return
 }
